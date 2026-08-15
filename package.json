@@ -1,9 +1,9 @@
 {
-  "name": "quiz-app-api",
+  "name": "github-repo-manager",
   "version": "1.0.0",
-  "description": "API for Quiz App",
+  "description": "API to manage GitHub repository files",
   "main": "api/index.js",
   "dependencies": {
-    "axios": "^1.6.0"
+    "@octokit/rest": "^19.0.0"
   }
 }
