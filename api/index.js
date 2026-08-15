@@ -1,27 +1,64 @@
-const axios = require('axios');
+const { Octokit } = require("@octokit/rest");
 
 module.exports = async (req, res) => {
-    const { fileName, action, index, item } = req.body;
-    
-    // 1. گٹ ہب سے فائل کا موجودہ ڈیٹا حاصل کریں
-    const apiUrl = `https://api.github.com/repos/${process.env.GITHUB_USER}/${process.env.GITHUB_REPO}/contents/${fileName}`;
-    const headers = { 'Authorization': `Bearer ${process.env.GITHUB_TOKEN}` };
+    // CORS configuration
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    const getRes = await axios.get(apiUrl, { headers });
-    let content = JSON.parse(Buffer.from(getRes.data.content, 'base64').toString());
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
 
-    // 2. ڈیٹا میں تبدیلی (Create/Edit/Delete)
-    if (action === 'create') content.push(item);
-    if (action === 'edit') content[index] = item;
-    if (action === 'delete') content.splice(index, 1);
+    // Initialize GitHub API with token from environment variables
+    const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+    const owner = process.env.GITHUB_OWNER;
+    const repo = process.env.GITHUB_REPO;
 
-    // 3. گٹ ہب پر واپس اپلوڈ کریں
-    const putData = {
-        message: `${action} entry via Vercel`,
-        content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
-        sha: getRes.data.sha
-    };
+    // Get category from query (GET) or body (POST)
+    const category = req.query.category || (req.body && req.body.category);
+    if (!category) {
+        return res.status(400).json({ error: "Category is required" });
+    }
 
-    await axios.put(apiUrl, putData, { headers });
-    res.status(200).json({ success: true });
+    const path = `${category}.json`;
+
+    // ==================== READ FILE (GET) ====================
+    if (req.method === 'GET') {
+        try {
+            const { data } = await octokit.repos.getContent({ owner, repo, path });
+            const content = Buffer.from(data.content, 'base64').toString('utf8');
+            return res.status(200).json({ sha: data.sha, data: JSON.parse(content) });
+        } catch (error) {
+            if (error.status === 404) {
+                // If file does not exist, return empty array
+                return res.status(200).json({ sha: null, data: [] });
+            }
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    // ==================== UPDATE/CREATE FILE (POST) ====================
+    if (req.method === 'POST') {
+        try {
+            const { data: newContent, sha } = req.body;
+            const encodedContent = Buffer.from(JSON.stringify(newContent, null, 2)).toString('base64');
+            
+            const params = {
+                owner,
+                repo,
+                path,
+                message: `Updated ${path} via API`,
+                content: encodedContent,
+            };
+            if (sha) params.sha = sha; // Need SHA to update existing files
+
+            const { data } = await octokit.repos.createOrUpdateFileContents(params);
+            return res.status(200).json({ success: true, sha: data.content.sha });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
+    return res.status(405).json({ error: "Method not allowed" });
 };
