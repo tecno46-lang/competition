@@ -4,6 +4,8 @@ import "android.os.*"
 import "android.widget.*"
 import "android.view.*"
 import "android.graphics.Typeface"
+import "android.content.Intent"
+import "android.speech.RecognizerIntent"
 import "com.androlua.LuaDialog"
 import "com.androlua.Http"
 import "android.speech.tts.TextToSpeech"
@@ -22,6 +24,22 @@ local tts
 local engineList = {}    
 local engineLabels = {}  
 local currentEnginePkg = nil 
+
+-- وائس سرچ کے لیے گلوبل ویری ایبل
+_G.currentSearchBox = nil
+
+-- وائس سرچ کا رزلٹ حاصل کرنے کا فنکشن
+function onActivityResult(requestCode, resultCode, intent)
+    if requestCode == 1234 and resultCode == Activity.RESULT_OK and intent ~= nil then
+        local results = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+        if results and results.size() > 0 then
+            local spokenText = results.get(0)
+            if _G.currentSearchBox ~= nil then
+                _G.currentSearchBox.setText(spokenText)
+            end
+        end
+    end
+end
 
 local function initTTS(enginePackage)
     if tts ~= nil then tts.shutdown() end
@@ -137,7 +155,11 @@ local function showQuestionsListDialog(data, titleText)
     local list_views = {}
     local list_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
-        { EditText, id = "et_search", hint = "سوال تلاش کریں...", layout_width = "fill", layout_marginBottom = "10dp", singleLine = true },
+        -- وائس سرچ اور ٹیکسٹ سرچ کے لئے ہارزنٹل لے آؤٹ
+        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
+            { EditText, id = "et_search", hint = "سوال تلاش کریں...", layout_width = "0dp", layout_weight = 1, singleLine = true },
+            { TextView, id = "btn_voice", text = "🎤", textSize = "28sp", paddingLeft = "10dp", paddingRight = "5dp", textColor = "#2196F3" }
+        },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "questions_container", orientation = "vertical", layout_width = "fill" } 
         },
@@ -145,6 +167,25 @@ local function showQuestionsListDialog(data, titleText)
     }
     
     list_dlg.setView(loadlayout(list_layout, list_views))
+
+    -- سرچ باکس کو گلوبل ویری ایبل میں سیٹ کر دیا
+    _G.currentSearchBox = list_views.et_search
+
+    -- وائس سرچ بٹن کا فنکشن
+    list_views.btn_voice.onClick = function()
+        local intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ur-PK")
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "تلاش کرنے کے لئے بولیں...")
+        
+        local success, err = pcall(function()
+            activity.startActivityForResult(intent, 1234)
+        end)
+        
+        if not success then
+            Toast.makeText(activity, "وائس سرچ اس ڈیوائس پر کام نہیں کر رہا۔", Toast.LENGTH_SHORT).show()
+        end
+    end
 
     local items = data.qa_list or data
 
@@ -183,7 +224,11 @@ local function showQuestionsListDialog(data, titleText)
         end
     })
     
-    list_views.btn_close_list.onClick = function() list_dlg.dismiss() end
+    list_views.btn_close_list.onClick = function() 
+        _G.currentSearchBox = nil 
+        list_dlg.dismiss() 
+    end
+    
     list_dlg.show()
 end
 
@@ -215,7 +260,7 @@ local function fetchCategoryData(filename, categoryName)
     end)
 end
 
--- 91 کیٹیگریز کی لسٹ بالکل کتاب کے سوالات کی ترتیب کے مطابق
+-- 91 کیٹیگریز کی لسٹ
 local function showQASubMenu()
     local cat_dlg = LuaDialog(activity)
     cat_dlg.setTitle("کیٹیگری منتخب کریں")
