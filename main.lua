@@ -43,7 +43,7 @@ local function fixSpokenText(text)
   return text
 end
 
--- کسٹم وائس سرچ کا فنکشن (جو ڈائریکٹ ایڈٹ باکس میں لکھے گا)
+-- کسٹم وائس سرچ کا فنکشن (صرف Toast نوٹیفکیشن کے ساتھ، TTS کے بغیر)
 local function startVoiceSearch(targetEditText)
     local recordIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     recordIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -52,7 +52,7 @@ local function startVoiceSearch(targetEditText)
     local speechRecord = SpeechRecognizer.createSpeechRecognizer(activity)
     speechRecord.setRecognitionListener(RecognitionListener{
         onReadyForSpeech = function() 
-            if tts ~= nil then tts.speak("جی، فرمائیے", TextToSpeech.QUEUE_FLUSH, nil) end
+            Toast.makeText(activity, "Listening...", Toast.LENGTH_SHORT).show()
         end,
         onResults = function(results)
             local data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
@@ -62,12 +62,12 @@ local function startVoiceSearch(targetEditText)
                 if targetEditText ~= nil then
                     targetEditText.setText(spokenText)
                 end
-                if tts ~= nil then tts.speak("لکھ دیا گیا ہے", TextToSpeech.QUEUE_FLUSH, nil) end
+                Toast.makeText(activity, "Text added", Toast.LENGTH_SHORT).show()
             end
             speechRecord.destroy()
         end,
         onError = function()
-            if tts ~= nil then tts.speak("معذرت، سمجھ نہیں سکا", TextToSpeech.QUEUE_FLUSH, nil) end
+            Toast.makeText(activity, "Could not understand", Toast.LENGTH_SHORT).show()
             speechRecord.destroy()
         end
     })
@@ -160,6 +160,7 @@ local function showQuestionDetailsDialog(itemTitle, itemDetails)
         { TextView, id = "tv_q_title", text = itemTitle, textSize = "20sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "15dp" },
         { ScrollView, layout_width = "fill", layout_weight = 1, { TextView, text = itemDetails, textSize = "18sp", textColor = "#333333", layout_width = "fill", paddingBottom = "10dp" } },
         { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginTop = "15dp",
+            -- TTS اب صرف یہاں استعمال ہوگا
             { Button, id = "btn_listen", text = "Listen", layout_width = "0dp", layout_weight = 1, layout_marginRight = "5dp", backgroundColor = "#9C27B0", textColor = "#FFFFFF" },
             { Button, id = "btn_stop", text = "Stop", layout_width = "0dp", layout_weight = 1, layout_marginLeft = "2dp", layout_marginRight = "2dp", backgroundColor = "#F44336", textColor = "#FFFFFF" },
             { Button, id = "btn_close", text = "Close", layout_width = "0dp", layout_weight = 1, layout_marginLeft = "5dp", backgroundColor = "#9E9E9E", textColor = "#FFFFFF" }
@@ -190,8 +191,8 @@ local function showQuestionsListDialog(data, titleText)
     local list_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
         { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
-            { EditText, id = "et_search", hint = "سوال تلاش کریں...", layout_width = "0dp", layout_weight = 1, singleLine = true },
-            { Button, id = "btn_voice", text = "وائس سرچ 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
+            { EditText, id = "et_search", hint = "Search question...", layout_width = "0dp", layout_weight = 1, singleLine = true },
+            { Button, id = "btn_voice", text = "Voice Search 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
         },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "questions_container", orientation = "vertical", layout_width = "fill" } 
@@ -282,10 +283,9 @@ local function showQASubMenu()
     local cat_views = {}
     local cat_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
-        -- کیٹیگری میں بھی سرچ اور وائس سرچ شامل کیا گیا ہے
         { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
-            { EditText, id = "et_cat_search", hint = "کیٹیگری تلاش کریں...", layout_width = "0dp", layout_weight = 1, singleLine = true },
-            { Button, id = "btn_cat_voice", text = "وائس سرچ 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
+            { EditText, id = "et_cat_search", hint = "Search category...", layout_width = "0dp", layout_weight = 1, singleLine = true },
+            { Button, id = "btn_cat_voice", text = "Voice Search 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
         },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "cat_container", orientation = "vertical", layout_width = "fill" } 
@@ -295,7 +295,6 @@ local function showQASubMenu()
     
     cat_dlg.setView(loadlayout(cat_layout, cat_views))
     
-    -- کیٹیگری کے وائس سرچ بٹن کا فنکشن
     cat_views.btn_cat_voice.onClick = function()
         startVoiceSearch(cat_views.et_cat_search)
     end
