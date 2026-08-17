@@ -6,6 +6,8 @@ import "android.view.*"
 import "android.graphics.Typeface"
 import "android.content.Intent"
 import "android.speech.RecognizerIntent"
+import "android.speech.SpeechRecognizer"
+import "android.speech.RecognitionListener"
 import "com.androlua.LuaDialog"
 import "com.androlua.Http"
 import "android.speech.tts.TextToSpeech"
@@ -25,20 +27,52 @@ local engineList = {}
 local engineLabels = {}  
 local currentEnginePkg = nil 
 
--- وائس سرچ کے لیے گلوبل ویری ایبل
-_G.currentSearchBox = nil
+-- درست الفاظ کی فہرست (وائس سرچ کے لیے)
+local wordChangeTable = {
+  ["اپ"] = "آپ",
+  ["ام"] = "آم",
+  ["اج"] = "آج",
+  ["اتا"] = "آتا",
+  ["کیٹگری"] = "کیٹیگری"
+}
 
--- وائس سرچ کا رزلٹ حاصل کرنے کا فنکشن
-function onActivityResult(requestCode, resultCode, intent)
-    if requestCode == 1234 and resultCode == Activity.RESULT_OK and intent ~= nil then
-        local results = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-        if results and results.size() > 0 then
-            local spokenText = results.get(0)
-            if _G.currentSearchBox ~= nil then
-                _G.currentSearchBox.setText(spokenText)
+local function fixSpokenText(text)
+  for k, v in pairs(wordChangeTable) do
+    text = text:gsub("%f[%a]" .. k .. "%f[^%a]", v)
+  end
+  return text
+end
+
+-- کسٹم وائس سرچ کا فنکشن (جو ڈائریکٹ ایڈٹ باکس میں لکھے گا)
+local function startVoiceSearch(targetEditText)
+    local recordIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+    recordIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+    recordIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ur-PK")
+
+    local speechRecord = SpeechRecognizer.createSpeechRecognizer(activity)
+    speechRecord.setRecognitionListener(RecognitionListener{
+        onReadyForSpeech = function() 
+            if tts ~= nil then tts.speak("جی، فرمائیے", TextToSpeech.QUEUE_FLUSH, nil) end
+        end,
+        onResults = function(results)
+            local data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            if data and data.size() > 0 then
+                local spokenText = data.get(0)
+                spokenText = fixSpokenText(spokenText)
+                if targetEditText ~= nil then
+                    targetEditText.setText(spokenText)
+                end
+                if tts ~= nil then tts.speak("لکھ دیا گیا ہے", TextToSpeech.QUEUE_FLUSH, nil) end
             end
+            speechRecord.destroy()
+        end,
+        onError = function()
+            if tts ~= nil then tts.speak("معذرت، سمجھ نہیں سکا", TextToSpeech.QUEUE_FLUSH, nil) end
+            speechRecord.destroy()
         end
-    end
+    })
+
+    speechRecord.startListening(recordIntent)
 end
 
 local function initTTS(enginePackage)
@@ -155,10 +189,9 @@ local function showQuestionsListDialog(data, titleText)
     local list_views = {}
     local list_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
-        -- وائس سرچ اور ٹیکسٹ سرچ کے لئے ہارزنٹل لے آؤٹ
         { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
             { EditText, id = "et_search", hint = "سوال تلاش کریں...", layout_width = "0dp", layout_weight = 1, singleLine = true },
-            { TextView, id = "btn_voice", text = "🎤", textSize = "28sp", paddingLeft = "10dp", paddingRight = "5dp", textColor = "#2196F3" }
+            { Button, id = "btn_voice", text = "وائس سرچ 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
         },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "questions_container", orientation = "vertical", layout_width = "fill" } 
@@ -168,23 +201,9 @@ local function showQuestionsListDialog(data, titleText)
     
     list_dlg.setView(loadlayout(list_layout, list_views))
 
-    -- سرچ باکس کو گلوبل ویری ایبل میں سیٹ کر دیا
-    _G.currentSearchBox = list_views.et_search
-
-    -- وائس سرچ بٹن کا فنکشن
+    -- وائس سرچ بٹن
     list_views.btn_voice.onClick = function()
-        local intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ur-PK")
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "تلاش کرنے کے لئے بولیں...")
-        
-        local success, err = pcall(function()
-            activity.startActivityForResult(intent, 1234)
-        end)
-        
-        if not success then
-            Toast.makeText(activity, "وائس سرچ اس ڈیوائس پر کام نہیں کر رہا۔", Toast.LENGTH_SHORT).show()
-        end
+        startVoiceSearch(list_views.et_search)
     end
 
     local items = data.qa_list or data
@@ -224,11 +243,7 @@ local function showQuestionsListDialog(data, titleText)
         end
     })
     
-    list_views.btn_close_list.onClick = function() 
-        _G.currentSearchBox = nil 
-        list_dlg.dismiss() 
-    end
-    
+    list_views.btn_close_list.onClick = function() list_dlg.dismiss() end
     list_dlg.show()
 end
 
@@ -260,7 +275,6 @@ local function fetchCategoryData(filename, categoryName)
     end)
 end
 
--- 91 کیٹیگریز کی لسٹ
 local function showQASubMenu()
     local cat_dlg = LuaDialog(activity)
     cat_dlg.setTitle("کیٹیگری منتخب کریں")
@@ -268,6 +282,11 @@ local function showQASubMenu()
     local cat_views = {}
     local cat_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
+        -- کیٹیگری میں بھی سرچ اور وائس سرچ شامل کیا گیا ہے
+        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
+            { EditText, id = "et_cat_search", hint = "کیٹیگری تلاش کریں...", layout_width = "0dp", layout_weight = 1, singleLine = true },
+            { Button, id = "btn_cat_voice", text = "وائس سرچ 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
+        },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "cat_container", orientation = "vertical", layout_width = "fill" } 
         },
@@ -275,6 +294,11 @@ local function showQASubMenu()
     }
     
     cat_dlg.setView(loadlayout(cat_layout, cat_views))
+    
+    -- کیٹیگری کے وائس سرچ بٹن کا فنکشن
+    cat_views.btn_cat_voice.onClick = function()
+        startVoiceSearch(cat_views.et_cat_search)
+    end
     
     local qa_categories = {
         {file="allah_taala.json", name="اللہ تعالیٰ"},
@@ -370,22 +394,36 @@ local function showQASubMenu()
         {file="dawat_e_islami.json", name="دعوت اسلامی کا تعارف"}
     }
     
-    for i, item in ipairs(qa_categories) do
-        local btn = Button(activity)
-        btn.setText(tostring(i) .. "۔ " .. item.name)
-        btn.setTextSize(16)
-        btn.setPadding(20, 20, 20, 20)
-        
-        local params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        params.setMargins(0, 0, 0, 10)
-        btn.setLayoutParams(params)
-        
-        btn.setOnClickListener(function()
-            fetchCategoryData(item.file, item.name)
-        end)
-        
-        cat_views.cat_container.addView(btn)
+    local function populateCatList(query)
+        cat_views.cat_container.removeAllViews()
+        for i, item in ipairs(qa_categories) do
+            local catName = tostring(i) .. "۔ " .. item.name
+            if query == "" or string.find(catName, query, 1, true) then
+                local btn = Button(activity)
+                btn.setText(catName)
+                btn.setTextSize(16)
+                btn.setPadding(20, 20, 20, 20)
+                
+                local params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(0, 0, 0, 10)
+                btn.setLayoutParams(params)
+                
+                btn.setOnClickListener(function()
+                    fetchCategoryData(item.file, item.name)
+                end)
+                
+                cat_views.cat_container.addView(btn)
+            end
+        end
     end
+
+    populateCatList("")
+
+    cat_views.et_cat_search.addTextChangedListener(TextWatcher{
+        onTextChanged = function(s, start, before, count)
+            populateCatList(tostring(s))
+        end
+    })
 
     cat_views.btn_close_cat.onClick = function() cat_dlg.dismiss() end
     cat_dlg.show()
