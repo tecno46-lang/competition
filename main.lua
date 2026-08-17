@@ -23,6 +23,9 @@ local activity = this
 local BASE_URL = "https://raw.githubusercontent.com/tecno46-lang/competition/main/question%20answer%20data/"
 
 local tts
+local engineList = {}    
+local engineLabels = {}  
+local currentEnginePkg = nil 
 
 -- درست الفاظ کی فہرست (وائس سرچ کے لیے)
 local wordChangeTable = {
@@ -72,19 +75,81 @@ local function startVoiceSearch(targetEditText)
     speechRecord.startListening(recordIntent)
 end
 
--- ڈیفالٹ ٹی ٹی ایس کو انیشلائز کرنے کا فنکشن
-local function initTTS()
+-- ٹی ٹی ایس انجن کو انیشلائز کرنے کا فنکشن
+local function initTTS(enginePackage)
     if tts ~= nil then tts.shutdown() end
-    tts = TextToSpeech(activity, TextToSpeech.OnInitListener{
-        onInit = function(status)
-            if status == TextToSpeech.SUCCESS then
-                tts.setLanguage(Locale("ur", "PK"))
+    
+    if enginePackage == nil then
+        tts = TextToSpeech(activity, TextToSpeech.OnInitListener{
+            onInit = function(status)
+                if status == TextToSpeech.SUCCESS then
+                    tts.setLanguage(Locale("ur", "PK"))
+                    if #engineList == 0 then
+                        local engines = tts.getEngines()
+                        for i = 0, engines.size() - 1 do
+                            local eng = engines.get(i)
+                            table.insert(engineList, eng.name)
+                            table.insert(engineLabels, eng.label)
+                        end
+                    end
+                end
             end
-        end
-    })
+        })
+    else
+        tts = TextToSpeech(activity, TextToSpeech.OnInitListener{
+            onInit = function(status)
+                if status == TextToSpeech.SUCCESS then
+                    tts.setLanguage(Locale("ur", "PK"))
+                end
+            end
+        }, enginePackage)
+    end
 end
 
-initTTS()
+initTTS(nil)
+
+-- سیٹنگز ڈائیلاگ (ٹی ٹی ایس انجن تبدیل کرنے کے لیے)
+local function showSettingsDialog()
+    local set_dlg = LuaDialog(activity)
+    local set_views = {}
+    
+    if #engineList == 0 then
+        Toast.makeText(activity, "Engines are loading, please try again shortly.", Toast.LENGTH_SHORT).show()
+        return
+    end
+
+    local set_layout = {
+        LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
+        { TextView, text = "Select TTS Engine", textSize = "20sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "15dp" },
+        { Spinner, id = "spinner_tts", layout_width = "fill", layout_marginBottom = "15dp" },
+        { Button, id = "btn_save_settings", text = "Save", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#4CAF50", textColor = "#FFFFFF", padding = "10dp" }
+    }
+    
+    set_dlg.setView(loadlayout(set_layout, set_views))
+    
+    local adapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, String(engineLabels))
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    set_views.spinner_tts.setAdapter(adapter)
+    
+    local tempSelectedPkg = currentEnginePkg
+    set_views.spinner_tts.setOnItemSelectedListener(AdapterView.OnItemSelectedListener{
+        onItemSelected = function(parent, view, position, id) tempSelectedPkg = engineList[position + 1] end,
+        onNothingSelected = function(parent) end
+    })
+    
+    set_views.btn_save_settings.onClick = function()
+        if tempSelectedPkg ~= nil and tempSelectedPkg ~= currentEnginePkg then
+            currentEnginePkg = tempSelectedPkg
+            initTTS(currentEnginePkg) 
+            Toast.makeText(activity, "TTS Engine changed successfully", Toast.LENGTH_SHORT).show()
+        else
+            Toast.makeText(activity, "No changes made", Toast.LENGTH_SHORT).show()
+        end
+        set_dlg.dismiss()
+    end
+    
+    set_dlg.show()
+end
 
 local function showQuestionDetailsDialog(itemTitle, itemDetails)
     itemTitle = itemTitle:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
@@ -107,7 +172,6 @@ local function showQuestionDetailsDialog(itemTitle, itemDetails)
     detail_dlg.setCancelable(false)
     detail_views.tv_q_title.setTypeface(Typeface.DEFAULT_BOLD)
 
-    -- TTS اب صرف سوالات/جوابات سننے کے لیے استعمال ہوگا
     detail_views.btn_listen.onClick = function()
         if tts ~= nil then 
             local speechText = itemTitle .. "۔ جواب: " .. itemDetails
@@ -372,7 +436,7 @@ function showQuizMainDialog()
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
         { TextView, id = "tv_title", text = "خزانہ علم", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
         { Button, id = "btn_qa", text = "سوالات اور جوابات", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
-        -- سیٹنگز کا بٹن ہٹا دیا گیا ہے
+        { Button, id = "btn_settings", text = "Settings", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#FF9800", textColor = "#FFFFFF", padding = "15dp" },
         { Button, id = "btn_exit", text = "Exit", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
     }
 
@@ -384,6 +448,9 @@ function showQuizMainDialog()
         showQASubMenu()
     end
     
+    -- سیٹنگز کے بٹن پر کلک کرنے کا فنکشن اب کام کرے گا
+    layout_views.btn_settings.onClick = function() showSettingsDialog() end
+
     layout_views.btn_exit.onClick = function()
         if tts ~= nil then tts.stop(); tts.shutdown() end
         dlg.dismiss() 
