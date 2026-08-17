@@ -188,7 +188,7 @@ local function showQuestionsListDialog(data, titleText)
 end
 
 local function fetchCategoryData(filename, categoryName)
-    Toast.makeText(activity, "ڈیٹا سرور سے لوڈ ہو رہا ہے...", Toast.LENGTH_SHORT).show()
+    Toast.makeText(activity, "Please wait...", Toast.LENGTH_SHORT).show()
     
     local url = BASE_URL .. filename .. "?t=" .. tostring(os.time())
     
@@ -200,15 +200,15 @@ local function fetchCategoryData(filename, categoryName)
                 showQuestionsListDialog(data, categoryName)
             else
                 local dlg = LuaDialog(activity)
-                dlg.setTitle("JSON Error")
+                dlg.setTitle("Error")
                 dlg.setMessage("اس فائل کا فارمیٹ خراب ہے۔ بریکٹ یا کوما مسنگ ہے۔")
                 dlg.setButton("OK", function() dlg.dismiss() end)
                 dlg.show()
             end
         else
             local dlg = LuaDialog(activity)
-            dlg.setTitle("File Not Found")
-            dlg.setMessage("یہ فائل ابھی سرور پر موجود نہیں ہے۔\n\nفائل کا نام: " .. filename)
+            dlg.setTitle("Not Found")
+            dlg.setMessage("یہ فائل ابھی دستیاب نہیں ہے۔\n\nفائل کا نام: " .. filename)
             dlg.setButton("OK", function() dlg.dismiss() end)
             dlg.show()
         end
@@ -352,10 +352,10 @@ function showQuizMainDialog()
     local layout_views = {}
     local main_layout = {
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
-        { TextView, id = "tv_title", text = "سوالات اور جوابات کی دنیا", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
+        { TextView, id = "tv_title", text = "خزانہ علم", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
         { Button, id = "btn_qa", text = "سوالات اور جوابات", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
-        { Button, id = "btn_settings", text = "سیٹنگز (Settings)", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#FF9800", textColor = "#FFFFFF", padding = "15dp" },
-        { Button, id = "btn_exit", text = "ایگزٹ (Exit)", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
+        { Button, id = "btn_settings", text = "Settings", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#FF9800", textColor = "#FFFFFF", padding = "15dp" },
+        { Button, id = "btn_exit", text = "Exit", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
     }
 
     dlg.setView(loadlayout(main_layout, layout_views))
