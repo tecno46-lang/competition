@@ -68,7 +68,6 @@ end
 
 -- سوال اور جواب دکھانے والا ڈائیلاگ
 local function showQuestionDetailsDialog(itemTitle, itemDetails)
-    -- غیر ضروری ٹیگز کی صفائی
     itemTitle = itemTitle:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
     itemDetails = itemDetails:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
 
@@ -126,7 +125,6 @@ local function showQuestionsListDialog(data, titleText)
                 local btn = Button(activity)
                 local cleanTitle = title:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
                 
-                -- پرانے سوال نمبر (مثلاً 'سوال نمبر 1014: ') کو ہٹا کر اس کیٹیگری کے حساب سے 1, 2, 3 نمبر لگانا
                 cleanTitle = cleanTitle:gsub("سوال نمبر %d+[%:۔%-]?%s*", "")
                 cleanTitle = tostring(i) .. "۔ " .. cleanTitle
 
@@ -345,8 +343,9 @@ function showQuizMainDialog()
     local layout_views = {}
     local main_layout = {
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
-        { TextView, id = "tv_title", text = "خزانہ علم", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
-        { Button, id = "btn_qa", text = "سوالات اور جوابات", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
+        { TextView, id = "tv_title", text = "Sawalat Aur Jawabat Ki Duniya", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "5dp" },
+        { TextView, text = "project by learning with Gulab", textSize = "14sp", textColor = "#607D8B", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
+        { Button, id = "btn_qa", text = "Sawalat Aur Jawabat", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
         { Button, id = "btn_exit", text = "Exit", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
     }
 
