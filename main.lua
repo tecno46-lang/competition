@@ -10,22 +10,13 @@ import "android.speech.SpeechRecognizer"
 import "android.speech.RecognitionListener"
 import "com.androlua.LuaDialog"
 import "com.androlua.Http"
-import "android.speech.tts.TextToSpeech"
-import "java.util.Locale"
 import "java.lang.String"
-import "android.widget.ArrayAdapter"
-import "android.widget.AdapterView"
 import "android.text.TextWatcher"
 
 local activity = this
 
 -- آپ کے گٹ ہب فولڈر کا ڈائریکٹ پاتھ
 local BASE_URL = "https://raw.githubusercontent.com/tecno46-lang/competition/main/question%20answer%20data/"
-
-local tts
-local engineList = {}    
-local engineLabels = {}  
-local currentEnginePkg = nil 
 
 -- درست الفاظ کی فہرست (وائس سرچ کے لیے)
 local wordChangeTable = {
@@ -75,83 +66,9 @@ local function startVoiceSearch(targetEditText)
     speechRecord.startListening(recordIntent)
 end
 
--- ٹی ٹی ایس انجن کو انیشلائز کرنے کا فنکشن
-local function initTTS(enginePackage)
-    if tts ~= nil then tts.shutdown() end
-    
-    if enginePackage == nil then
-        tts = TextToSpeech(activity, TextToSpeech.OnInitListener{
-            onInit = function(status)
-                if status == TextToSpeech.SUCCESS then
-                    tts.setLanguage(Locale("ur", "PK"))
-                    if #engineList == 0 then
-                        local engines = tts.getEngines()
-                        for i = 0, engines.size() - 1 do
-                            local eng = engines.get(i)
-                            table.insert(engineList, eng.name)
-                            table.insert(engineLabels, eng.label)
-                        end
-                    end
-                end
-            end
-        })
-    else
-        tts = TextToSpeech(activity, TextToSpeech.OnInitListener{
-            onInit = function(status)
-                if status == TextToSpeech.SUCCESS then
-                    tts.setLanguage(Locale("ur", "PK"))
-                end
-            end
-        }, enginePackage)
-    end
-end
-
-initTTS(nil)
-
--- سیٹنگز ڈائیلاگ (ٹی ٹی ایس انجن تبدیل کرنے کے لیے)
-local function showSettingsDialog()
-    local set_dlg = LuaDialog(activity)
-    local set_views = {}
-    
-    if #engineList == 0 then
-        Toast.makeText(activity, "Engines are loading, please try again shortly.", Toast.LENGTH_SHORT).show()
-        return
-    end
-
-    local set_layout = {
-        LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
-        { TextView, text = "Select TTS Engine", textSize = "20sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "15dp" },
-        { Spinner, id = "spinner_tts", layout_width = "fill", layout_marginBottom = "15dp" },
-        { Button, id = "btn_save_settings", text = "Save", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#4CAF50", textColor = "#FFFFFF", padding = "10dp" }
-    }
-    
-    set_dlg.setView(loadlayout(set_layout, set_views))
-    
-    local adapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, String(engineLabels))
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    set_views.spinner_tts.setAdapter(adapter)
-    
-    local tempSelectedPkg = currentEnginePkg
-    set_views.spinner_tts.setOnItemSelectedListener(AdapterView.OnItemSelectedListener{
-        onItemSelected = function(parent, view, position, id) tempSelectedPkg = engineList[position + 1] end,
-        onNothingSelected = function(parent) end
-    })
-    
-    set_views.btn_save_settings.onClick = function()
-        if tempSelectedPkg ~= nil and tempSelectedPkg ~= currentEnginePkg then
-            currentEnginePkg = tempSelectedPkg
-            initTTS(currentEnginePkg) 
-            Toast.makeText(activity, "TTS Engine changed successfully", Toast.LENGTH_SHORT).show()
-        else
-            Toast.makeText(activity, "No changes made", Toast.LENGTH_SHORT).show()
-        end
-        set_dlg.dismiss()
-    end
-    
-    set_dlg.show()
-end
-
+-- سوال اور جواب دکھانے والا ڈائیلاگ
 local function showQuestionDetailsDialog(itemTitle, itemDetails)
+    -- غیر ضروری ٹیگز کی صفائی
     itemTitle = itemTitle:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
     itemDetails = itemDetails:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
 
@@ -161,24 +78,13 @@ local function showQuestionDetailsDialog(itemTitle, itemDetails)
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
         { TextView, id = "tv_q_title", text = itemTitle, textSize = "20sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "15dp" },
         { ScrollView, layout_width = "fill", layout_weight = 1, { TextView, text = itemDetails, textSize = "18sp", textColor = "#333333", layout_width = "fill", paddingBottom = "10dp" } },
-        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginTop = "15dp",
-            { Button, id = "btn_listen", text = "Listen", layout_width = "0dp", layout_weight = 1, layout_marginRight = "5dp", backgroundColor = "#9C27B0", textColor = "#FFFFFF" },
-            { Button, id = "btn_stop", text = "Stop", layout_width = "0dp", layout_weight = 1, layout_marginLeft = "2dp", layout_marginRight = "2dp", backgroundColor = "#F44336", textColor = "#FFFFFF" },
-            { Button, id = "btn_close", text = "Close", layout_width = "0dp", layout_weight = 1, layout_marginLeft = "5dp", backgroundColor = "#9E9E9E", textColor = "#FFFFFF" }
-        }
+        { Button, id = "btn_close", text = "Close", layout_width = "fill", layout_marginTop = "15dp", backgroundColor = "#9E9E9E", textColor = "#FFFFFF", padding = "15dp" }
     }
 
     detail_dlg.setView(loadlayout(detail_layout, detail_views))
     detail_dlg.setCancelable(false)
     detail_views.tv_q_title.setTypeface(Typeface.DEFAULT_BOLD)
 
-    detail_views.btn_listen.onClick = function()
-        if tts ~= nil then 
-            local speechText = itemTitle .. "۔ جواب: " .. itemDetails
-            tts.speak(speechText, TextToSpeech.QUEUE_FLUSH, nil) 
-        end
-    end
-    detail_views.btn_stop.onClick = function() if tts ~= nil then tts.stop() end end
     detail_views.btn_close.onClick = function() detail_dlg.dismiss() end
     
     detail_dlg.show()
@@ -219,6 +125,11 @@ local function showQuestionsListDialog(data, titleText)
             if query == "" or string.find(title, query, 1, true) then
                 local btn = Button(activity)
                 local cleanTitle = title:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
+                
+                -- پرانے سوال نمبر (مثلاً 'سوال نمبر 1014: ') کو ہٹا کر اس کیٹیگری کے حساب سے 1, 2, 3 نمبر لگانا
+                cleanTitle = cleanTitle:gsub("سوال نمبر %d+[%:۔%-]?%s*", "")
+                cleanTitle = tostring(i) .. "۔ " .. cleanTitle
+
                 btn.setText(cleanTitle)
                 btn.setTextSize(16)
                 btn.setPadding(20, 20, 20, 20)
@@ -228,7 +139,7 @@ local function showQuestionsListDialog(data, titleText)
                 btn.setLayoutParams(params)
                 
                 btn.setOnClickListener(function()
-                    showQuestionDetailsDialog(title, details)
+                    showQuestionDetailsDialog(cleanTitle, details)
                 end)
                 
                 list_views.questions_container.addView(btn)
@@ -436,7 +347,6 @@ function showQuizMainDialog()
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
         { TextView, id = "tv_title", text = "خزانہ علم", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
         { Button, id = "btn_qa", text = "سوالات اور جوابات", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
-        { Button, id = "btn_settings", text = "Settings", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#FF9800", textColor = "#FFFFFF", padding = "15dp" },
         { Button, id = "btn_exit", text = "Exit", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
     }
 
@@ -447,12 +357,8 @@ function showQuizMainDialog()
     layout_views.btn_qa.onClick = function()
         showQASubMenu()
     end
-    
-    -- سیٹنگز کے بٹن پر کلک کرنے کا فنکشن اب کام کرے گا
-    layout_views.btn_settings.onClick = function() showSettingsDialog() end
 
     layout_views.btn_exit.onClick = function()
-        if tts ~= nil then tts.stop(); tts.shutdown() end
         dlg.dismiss() 
     end
 
