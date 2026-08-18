@@ -96,10 +96,12 @@ local function showQuestionsListDialog(data, titleText)
     local list_views = {}
     local list_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
-        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
+        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "5dp", gravity = "center_vertical",
             { EditText, id = "et_search", hint = "Search question...", layout_width = "0dp", layout_weight = 1, singleLine = true },
             { Button, id = "btn_voice", text = "Voice Search 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
         },
+        -- کل سوالات کی تعداد دکھانے کے لیے ٹیکسٹ ویو
+        { TextView, id = "tv_q_count", text = "Total Questions: 0", textSize = "14sp", textColor = "#4CAF50", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center" },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "questions_container", orientation = "vertical", layout_width = "fill" } 
         },
@@ -116,17 +118,19 @@ local function showQuestionsListDialog(data, titleText)
 
     local function populateList(query)
         list_views.questions_container.removeAllViews()
+        local count = 0
         
         for i, item in ipairs(items) do
             local title = item.question or item.title or ""
             local details = item.answer or item.details or ""
             
             if query == "" or string.find(title, query, 1, true) then
+                count = count + 1
                 local btn = Button(activity)
                 local cleanTitle = title:gsub("%[.-%]", ""):gsub("%(start_span%)", ""):gsub("%(end_span%)", "")
                 
                 cleanTitle = cleanTitle:gsub("سوال نمبر %d+[%:۔%-]?%s*", "")
-                cleanTitle = tostring(i) .. "۔ " .. cleanTitle
+                cleanTitle = tostring(count) .. "۔ " .. cleanTitle
 
                 btn.setText(cleanTitle)
                 btn.setTextSize(16)
@@ -143,6 +147,8 @@ local function showQuestionsListDialog(data, titleText)
                 list_views.questions_container.addView(btn)
             end
         end
+        -- ٹوٹل گنتی کو اپڈیٹ کرنا
+        list_views.tv_q_count.setText("Total Questions: " .. tostring(count))
     end
 
     populateList("")
@@ -192,10 +198,12 @@ local function showQASubMenu()
     local cat_views = {}
     local cat_layout = {
         LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
-        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center_vertical",
+        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "5dp", gravity = "center_vertical",
             { EditText, id = "et_cat_search", hint = "Search category...", layout_width = "0dp", layout_weight = 1, singleLine = true },
             { Button, id = "btn_cat_voice", text = "Voice Search 🎤", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
         },
+        -- کل کیٹیگریز کی تعداد دکھانے کے لیے ٹیکسٹ ویو
+        { TextView, id = "tv_cat_count", text = "Total Categories: 0", textSize = "14sp", textColor = "#4CAF50", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center" },
         { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
             { LinearLayout, id = "cat_container", orientation = "vertical", layout_width = "fill" } 
         },
@@ -208,105 +216,113 @@ local function showQASubMenu()
         startVoiceSearch(cat_views.et_cat_search)
     end
     
+    -- اردو اور رومن اردو دونوں ناموں کے ساتھ 91 کیٹیگریز کی لسٹ
     local qa_categories = {
-        {file="allah_taala.json", name="اللہ تعالیٰ"},
-        {file="nabuwat.json", name="نبوت ورسالت"},
-        {file="farishtay.json", name="فرشتے"},
-        {file="jinnat.json", name="جنات"},
-        {file="jannat.json", name="جنت"},
-        {file="dozakh.json", name="دوزخ"},
-        {file="barzakh.json", name="عالم برزخ"},
-        {file="qayamat_nishaniyan.json", name="قیامت کی نشانیاں"},
-        {file="qayamat.json", name="قیامت"},
-        {file="iman_kufr.json", name="ایمان وکفر"},
-        {file="wilayat.json", name="ولایت"},
-        {file="taharat.json", name="طہارت"},
-        {file="wuzu.json", name="وضو"},
-        {file="ghusl.json", name="غسل"},
-        {file="tayammum.json", name="تیمم"},
-        {file="azan.json", name="اذان واقامت"},
-        {file="namaz.json", name="نماز"},
-        {file="namaz_sharait.json", name="نماز کی شرائط"},
-        {file="namaz_faraiz.json", name="نماز کے فرائض"},
-        {file="sajda_saho.json", name="واجبات نماز اور سجدہ سہو"},
-        {file="namaz_witr.json", name="نماز وتر"},
-        {file="sunnat_nawafil.json", name="سنتیں اور نوافل"},
-        {file="taraweeh.json", name="تراویح"},
-        {file="qaza_namaz.json", name="قضا نمازیں"},
-        {file="sajda_tilawat.json", name="سجدہ تلاوت"},
-        {file="musafir_namaz.json", name="مسافر کی نماز"},
-        {file="jumma.json", name="جمعہ"},
-        {file="eidein.json", name="عیدین"},
-        {file="mayyit_ghusl.json", name="میت کا غسل اور کفن"},
-        {file="namaz_janaza.json", name="نماز جنازہ"},
-        {file="qabr_dafan.json", name="قبر و دفن"},
-        {file="zakat.json", name="زکوٰۃ"},
-        {file="sadqa.json", name="صدقہ"},
-        {file="roza.json", name="روزہ"},
-        {file="hajj_umrah.json", name="حج وعمرہ"},
-        {file="qurbani.json", name="ذِبح اور قربانی"},
-        {file="nikah.json", name="نکاح"},
-        {file="talaq.json", name="طلاق، عدت اور سوگ"},
-        {file="qasam.json", name="قسم"},
-        {file="luqata.json", name="لُقَطہ"},
-        {file="waqf.json", name="وقف اور چندہ"},
-        {file="masjid.json", name="مسجد"},
-        {file="tijarat.json", name="کَسْب اور تجارت"},
-        {file="qarz_sood.json", name="قرض اور سود"},
-        {file="khana.json", name="کھانا"},
-        {file="dawat.json", name="دعوت اور مہمان نوازی"},
-        {file="libas.json", name="لباس، انگوٹھی اور زیور"},
-        {file="zeenat.json", name="زینت"},
-        {file="aadab.json", name="بیٹھنے سونے اور چلنے کے آداب"},
-        {file="salam.json", name="سلام اور مُصافَحَہ"},
-        {file="cheenk.json", name="چھینک اور جماہی"},
-        {file="ziyarat.json", name="زیارتِ قبور"},
-        {file="quran_fazail.json", name="قرآن کریم (فضائل و معلومات)"},
-        {file="quran_ayaat.json", name="آیات اور سورتوں کی معلومات"},
-        {file="anbiya.json", name="انبیائے کرام"},
-        {file="husn_akhlaq.json", name="حُسْنِ اخلاق"},
-        {file="khauf_e_khuda.json", name="خوفِ خدا"},
-        {file="silah_rahmi.json", name="صلۂ رحمی"},
-        {file="sabr_shukr.json", name="صبر و شکر"},
-        {file="tauba.json", name="توبہ و اِسْتِغفار"},
-        {file="ilm.json", name="علم کے فضائل"},
-        {file="walidein.json", name="والدین اور ان کے حقوق"},
-        {file="aulad.json", name="اولاد اور ان کے حقوق"},
-        {file="gheebat.json", name="غیبت"},
-        {file="badshuguni.json", name="بدشگونی"},
-        {file="badgumani.json", name="بدگمانی"},
-        {file="hirs.json", name="حرص"},
-        {file="jhoot.json", name="جھوٹ"},
-        {file="bughz_keena.json", name="بغض و کینہ"},
-        {file="hasad.json", name="حسد"},
-        {file="ghussa.json", name="غصہ"},
-        {file="takabbur.json", name="تکبر"},
-        {file="riyakari.json", name="ریاکاری"},
-        {file="seerat_un_nabi.json", name="سیرت"},
-        {file="siddique_akbar.json", name="سیدنا صدیق اکبر"},
-        {file="umar_farooq.json", name="سیدنا عمر فاروق اعظم"},
-        {file="usman_ghani.json", name="سیدنا عثمان غنی"},
-        {file="ali_murtaza.json", name="سیدنا علی المرتضیٰ"},
-        {file="ashra_mubashara.json", name="عَشَرَۂ مُبَشَّرَہ"},
-        {file="sahaba_kiram.json", name="صحابہ کرام"},
-        {file="ummahat_ul_momineen.json", name="امہات المومنین"},
-        {file="ahl_e_bait.json", name="اہلِ بیت"},
-        {file="ulama_mujtahideen.json", name="علما و مُجْتہدین"},
-        {file="auliya_saliheen.json", name="اولیاء و صالحین"},
-        {file="ala_hazrat.json", name="امامِ اہلسنت اعلیٰ حضرت"},
-        {file="ameer_e_ahlesunnat.json", name="امیرِ اہلسنّت"},
-        {file="zikr_o_azkar.json", name="ذکر و اذکار"},
-        {file="darood_pak.json", name="درود پاک"},
-        {file="baiyat_o_tareeqat.json", name="بیعت و طریقت"},
-        {file="muqaddas_maqamat.json", name="مُقَدَّس مقامات"},
-        {file="dawat_e_islami.json", name="دعوت اسلامی کا تعارف"}
+        {file="allah_taala.json", name="اللہ تعالیٰ", roman="Allah Ta'ala"},
+        {file="nabuwat.json", name="نبوت ورسالت", roman="Nabuwat o Risalat"},
+        {file="farishtay.json", name="فرشتے", roman="Farishtay"},
+        {file="jinnat.json", name="جنات", roman="Jinnat"},
+        {file="jannat.json", name="جنت", roman="Jannat"},
+        {file="dozakh.json", name="دوزخ", roman="Dozakh"},
+        {file="barzakh.json", name="عالم برزخ", roman="Aalam-e-Barzakh"},
+        {file="qayamat_nishaniyan.json", name="قیامت کی نشانیاں", roman="Qayamat Ki Nishaniyan"},
+        {file="qayamat.json", name="قیامت", roman="Qayamat"},
+        {file="iman_kufr.json", name="ایمان وکفر", roman="Iman o Kufr"},
+        {file="wilayat.json", name="ولایت", roman="Wilayat"},
+        {file="taharat.json", name="طہارت", roman="Taharat"},
+        {file="wuzu.json", name="وضو", roman="Wuzu"},
+        {file="ghusl.json", name="غسل", roman="Ghusl"},
+        {file="tayammum.json", name="تیمم", roman="Tayammum"},
+        {file="azan.json", name="اذان واقامت", roman="Azan o Iqamat"},
+        {file="namaz.json", name="نماز", roman="Namaz"},
+        {file="namaz_sharait.json", name="نماز کی شرائط", roman="Namaz Ki Sharait"},
+        {file="namaz_faraiz.json", name="نماز کے فرائض", roman="Namaz Ke Faraiz"},
+        {file="sajda_saho.json", name="واجبات نماز اور سجدہ سہو", roman="Wajibat-e-Namaz aur Sajda Saho"},
+        {file="namaz_witr.json", name="نماز وتر", roman="Namaz-e-Witr"},
+        {file="sunnat_nawafil.json", name="سنتیں اور نوافل", roman="Sunnatain aur Nawafil"},
+        {file="taraweeh.json", name="تراویح", roman="Taraweeh"},
+        {file="qaza_namaz.json", name="قضا نمازیں", roman="Qaza Namazain"},
+        {file="sajda_tilawat.json", name="سجدہ تلاوت", roman="Sajda Tilawat"},
+        {file="musafir_namaz.json", name="مسافر کی نماز", roman="Musafir Ki Namaz"},
+        {file="jumma.json", name="جمعہ", roman="Jumma"},
+        {file="eidein.json", name="عیدین", roman="Eidein"},
+        {file="mayyit_ghusl.json", name="میت کا غسل اور کفن", roman="Mayyit Ka Ghusl aur Kafan"},
+        {file="namaz_janaza.json", name="نماز جنازہ", roman="Namaz-e-Janaza"},
+        {file="qabr_dafan.json", name="قبر و دفن", roman="Qabr o Dafan"},
+        {file="zakat.json", name="زکوٰۃ", roman="Zakat"},
+        {file="sadqa.json", name="صدقہ", roman="Sadqa"},
+        {file="roza.json", name="روزہ", roman="Roza"},
+        {file="hajj_umrah.json", name="حج وعمرہ", roman="Hajj o Umrah"},
+        {file="qurbani.json", name="ذِبح اور قربانی", roman="Zibh aur Qurbani"},
+        {file="nikah.json", name="نکاح", roman="Nikah"},
+        {file="talaq.json", name="طلاق، عدت اور سوگ", roman="Talaq, Iddat aur Sog"},
+        {file="qasam.json", name="قسم", roman="Qasam"},
+        {file="luqata.json", name="لُقَطہ", roman="Luqata"},
+        {file="waqf.json", name="وقف اور چندہ", roman="Waqf aur Chanda"},
+        {file="masjid.json", name="مسجد", roman="Masjid"},
+        {file="tijarat.json", name="کَسْب اور تجارت", roman="Kasb aur Tijarat"},
+        {file="qarz_sood.json", name="قرض اور سود", roman="Qarz aur Sood"},
+        {file="khana.json", name="کھانا", roman="Khana"},
+        {file="dawat.json", name="دعوت اور مہمان نوازی", roman="Dawat aur Mehman Nawazi"},
+        {file="libas.json", name="لباس، انگوٹھی اور زیور", roman="Libas, Angoothi aur Zewar"},
+        {file="zeenat.json", name="زینت", roman="Zeenat"},
+        {file="aadab.json", name="بیٹھنے سونے اور چلنے کے آداب", roman="Baithne, Sonay aur Chalne Ke Aadab"},
+        {file="salam.json", name="سلام اور مُصافَحَہ", roman="Salam aur Musafaha"},
+        {file="cheenk.json", name="چھینک اور جماہی", roman="Cheenk aur Jamahi"},
+        {file="ziyarat.json", name="زیارتِ قبور", roman="Ziyarat-e-Quboor"},
+        {file="quran_fazail.json", name="قرآن کریم (فضائل و معلومات)", roman="Quran Kareem (Fazail o Maloomat)"},
+        {file="quran_ayaat.json", name="آیات اور سورتوں کی معلومات", roman="Ayaat aur Surton Ki Maloomat"},
+        {file="anbiya.json", name="انبیائے کرام", roman="Anbiya-e-Kiram"},
+        {file="husn_akhlaq.json", name="حُسْنِ اخلاق", roman="Husn-e-Akhlaq"},
+        {file="khauf_e_khuda.json", name="خوفِ خدا", roman="Khauf-e-Khuda"},
+        {file="silah_rahmi.json", name="صلۂ رحمی", roman="Silah Rahmi"},
+        {file="sabr_shukr.json", name="صبر و شکر", roman="Sabr o Shukr"},
+        {file="tauba.json", name="توبہ و اِسْتِغفار", roman="Tauba o Istighfar"},
+        {file="ilm.json", name="علم کے فضائل", roman="Ilm Ke Fazail"},
+        {file="walidein.json", name="والدین اور ان کے حقوق", roman="Walidein aur un ke Huqooq"},
+        {file="aulad.json", name="اولاد اور ان کے حقوق", roman="Aulad aur un ke Huqooq"},
+        {file="gheebat.json", name="غیبت", roman="Gheebat"},
+        {file="badshuguni.json", name="بدشگونی", roman="Badshuguni"},
+        {file="badgumani.json", name="بدگمانی", roman="Badgumani"},
+        {file="hirs.json", name="حرص", roman="Hirs"},
+        {file="jhoot.json", name="جھوٹ", roman="Jhoot"},
+        {file="bughz_keena.json", name="بغض و کینہ", roman="Bughz o Keena"},
+        {file="hasad.json", name="حسد", roman="Hasad"},
+        {file="ghussa.json", name="غصہ", roman="Ghussa"},
+        {file="takabbur.json", name="تکبر", roman="Takabbur"},
+        {file="riyakari.json", name="ریاکاری", roman="Riyakari"},
+        {file="seerat_un_nabi.json", name="سیرت", roman="Seerat"},
+        {file="siddique_akbar.json", name="سیدنا صدیق اکبر", roman="Syedna Siddique Akbar"},
+        {file="umar_farooq.json", name="سیدنا عمر فاروق اعظم", roman="Syedna Umar Farooq Azam"},
+        {file="usman_ghani.json", name="سیدنا عثمان غنی", roman="Syedna Usman Ghani"},
+        {file="ali_murtaza.json", name="سیدنا علی المرتضیٰ", roman="Syedna Ali Al-Murtaza"},
+        {file="ashra_mubashara.json", name="عَشَرَۂ مُبَشَّرَہ", roman="Ashra Mubashara"},
+        {file="sahaba_kiram.json", name="صحابہ کرام", roman="Sahaba Kiram"},
+        {file="ummahat_ul_momineen.json", name="امہات المومنین", roman="Ummahat ul Momineen"},
+        {file="ahl_e_bait.json", name="اہلِ بیت", roman="Ahl-e-Bait"},
+        {file="ulama_mujtahideen.json", name="علما و مُجْتہدین", roman="Ulama o Mujtahideen"},
+        {file="auliya_saliheen.json", name="اولیاء و صالحین", roman="Auliya o Saliheen"},
+        {file="ala_hazrat.json", name="امامِ اہلسنت اعلیٰ حضرت", roman="Imam-e-Ahlesunnat Ala Hazrat"},
+        {file="ameer_e_ahlesunnat.json", name="امیرِ اہلسنّت", roman="Ameer-e-Ahlesunnat"},
+        {file="zikr_o_azkar.json", name="ذکر و اذکار", roman="Zikr o Azkar"},
+        {file="darood_pak.json", name="درود پاک", roman="Darood Pak"},
+        {file="baiyat_o_tareeqat.json", name="بیعت و طریقت", roman="Baiyat o Tareeqat"},
+        {file="muqaddas_maqamat.json", name="مُقَدَّس مقامات", roman="Muqaddas Maqamat"},
+        {file="dawat_e_islami.json", name="دعوت اسلامی کا تعارف", roman="Dawat-e-Islami Ka Taaruf"}
     }
     
     local function populateCatList(query)
         cat_views.cat_container.removeAllViews()
+        local count = 0
+        local qStr = query:lower()
+
         for i, item in ipairs(qa_categories) do
-            local catName = tostring(i) .. "۔ " .. item.name
-            if query == "" or string.find(catName, query, 1, true) then
+            -- اردو اور رومن اردو کو ملا کر نام بنانا
+            local catName = tostring(i) .. "۔ " .. item.name .. " (" .. item.roman .. ")"
+            local searchStr = catName:lower()
+
+            if query == "" or string.find(searchStr, qStr, 1, true) then
+                count = count + 1
                 local btn = Button(activity)
                 btn.setText(catName)
                 btn.setTextSize(16)
@@ -317,12 +333,14 @@ local function showQASubMenu()
                 btn.setLayoutParams(params)
                 
                 btn.setOnClickListener(function()
-                    fetchCategoryData(item.file, item.name)
+                    fetchCategoryData(item.file, item.name .. " (" .. item.roman .. ")")
                 end)
                 
                 cat_views.cat_container.addView(btn)
             end
         end
+        -- ٹوٹل کیٹیگریز گنتی اپڈیٹ کرنا
+        cat_views.tv_cat_count.setText("Total Categories: " .. tostring(count))
     end
 
     populateCatList("")
@@ -346,6 +364,7 @@ function showQuizMainDialog()
         { TextView, id = "tv_title", text = "Sawalat Aur Jawabat Ki Duniya", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "5dp" },
         { TextView, text = "project by learning with Gulab", textSize = "14sp", textColor = "#607D8B", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
         { Button, id = "btn_qa", text = "Sawalat Aur Jawabat", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
+        -- نعتیہ کلام کا بٹن ختم کر دیا گیا ہے
         { Button, id = "btn_exit", text = "Exit", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
     }
 
