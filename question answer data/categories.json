@@ -44,6 +44,7 @@
   { "file": "masjid.json", "name": "مسجد", "roman": "Masjid" },
   { "file": "tijarat.json", "name": "کَسْب اور تجارت", "roman": "Kasb aur Tijarat" },
   { "file": "qarz_sood.json", "name": "قرض اور سود", "roman": "Qarz aur Sood" },
+  { "file": "adalati_masail.json", "name": "عدالتی اور قانونی مسائل", "roman": "Adalati aur Qanooni Masail" },
   { "file": "khana.json", "name": "کھانا", "roman": "Khana" },
   { "file": "dawat.json", "name": "دعوت اور مہمان نوازی", "roman": "Dawat aur Mehman Nawazi" },
   { "file": "libas.json", "name": "لباس، انگوٹھی اور زیور", "roman": "Libas, Angoothi aur Zewar" },
