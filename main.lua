@@ -492,7 +492,7 @@ function showQuizMainDialog()
     local main_layout = {
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
         { TextView, id = "tv_title", text = "Zehni Azmaish Season 3", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "5dp" },
-        { TextView, text = "project by Tech for VI", textSize = "14sp", textColor = "#607D8B", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
+        { TextView, text = "project by Learning With Gulab", textSize = "14sp", textColor = "#607D8B", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
         
         -- کوئز والا بٹن
         { Button, id = "btn_qa", text = "Dilchasp Malomaat (Sawalan Jawaban)", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
