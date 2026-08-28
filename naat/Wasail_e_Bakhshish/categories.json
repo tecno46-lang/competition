@@ -1,8 +1,6 @@
 [
   { "file": "hamd_o_munajat.json", "name": "حمد و مناجات" },
-  { "file": "naat1.json", "name": "نعتیں اور استغاثے (حصہ اول)" },
-  { "file": "naat2.json", "name": "نعتیں اور استغاثے (حصہ دوم)" },
-  { "file": "naat3.json", "name": "نعتیں اور استغاثے (حصہ سوم)" },
+  { "file": "naat.json", "name": "نعتیں اور استغاثے" },
   { "file": "manqabat.json", "name": "مناقب" },
   { "file": "salaam.json", "name": "درود و سلام" },
   { "file": "mutafarriq.json", "name": "متفرق کلام" }
