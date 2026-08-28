@@ -15,15 +15,20 @@ import "android.text.TextWatcher"
 
 local activity = this
 
--- آپ کے گٹ ہب فولڈر کا ڈائریکٹ مین لنک (Base URL)
+-- آپ کے گٹ ہب فولڈر کا ڈائریکٹ مین لنک (Base URL) پچھلے کوئز کے لیے
 local BASE_URL = "https://raw.githubusercontent.com/tecno46-lang/competition/main/question%20answer%20data/"
 
--- آف لائن کیٹیگریز اور حوالوں کی فائلوں کا پاتھ
+-- عجائب القرآن کی فائل کا ڈائریکٹ را (raw) لنک
+local AJAIB_URL = "https://raw.githubusercontent.com/tecno46-lang/competition/main/ajaib_ul_quran_data/ajaib_ul_quran.json"
+
+-- آف لائن فائلوں کا پاتھ
 local refFilePath = activity.getLuaDir() .. "/references.json"
 local catFilePath = activity.getLuaDir() .. "/categories.json"
+local ajaibFilePath = activity.getLuaDir() .. "/ajaib_ul_quran.json"
 
 local referencesData = {}
 local categoriesData = {}
+local ajaibData = {}
 
 -- حوالے (References) لوڈ کرنے کا فنکشن
 local function loadReferences()
@@ -85,9 +90,40 @@ local function loadCategories()
     end)
 end
 
--- ایپ کھلتے ہی دونوں فائلیں بیک گراؤنڈ میں لوڈ کریں
+-- عجائب القرآن کا ڈیٹا بیک گراؤنڈ میں لوڈ کرنے کا نیا فنکشن
+local function loadAjaibData()
+    local file = io.open(ajaibFilePath, "r")
+    if file then
+        local content = file:read("*a")
+        file:close()
+        local cjson = require "cjson"
+        local success, data = pcall(cjson.decode, content)
+        if success and data then
+            ajaibData = data
+        end
+    end
+    
+    local url = AJAIB_URL .. "?t=" .. tostring(os.time())
+    Http.get(url, function(code, response)
+        if code == 200 and response and response:match("%S") then
+            local f = io.open(ajaibFilePath, "w")
+            if f then
+                f:write(response)
+                f:close()
+                local cjson = require "cjson"
+                local success, data = pcall(cjson.decode, response)
+                if success and data then
+                    ajaibData = data
+                end
+            end
+        end
+    end)
+end
+
+-- ایپ کھلتے ہی تینوں فائلیں بیک گراؤنڈ میں لوڈ کریں
 loadReferences()
 loadCategories()
+loadAjaibData()
 
 -- درست الفاظ کی فہرست (وائس سرچ کے لیے)
 local wordChangeTable = {
@@ -137,7 +173,7 @@ local function startVoiceSearch(targetEditText)
     speechRecord.startListening(recordIntent)
 end
 
--- سوال اور جواب دکھانے والا ڈائیلاگ
+-- کوئز کے سوال اور جواب دکھانے والا ڈائیلاگ
 local function showQuestionDetailsDialog(itemTitle, itemDetails, refText)
     local detail_dlg = LuaDialog(activity)
     local detail_views = {}
@@ -167,6 +203,7 @@ local function showQuestionDetailsDialog(itemTitle, itemDetails, refText)
     detail_dlg.show()
 end
 
+-- کوئز کی لسٹ دکھانے والا ڈائیلاگ
 local function showQuestionsListDialog(data, titleText, catKey)
     local list_dlg = LuaDialog(activity)
     list_dlg.setTitle(titleText)
@@ -245,7 +282,6 @@ end
 local function fetchCategoryData(filename, categoryName, catKey)
     Toast.makeText(activity, "Please wait...", Toast.LENGTH_SHORT).show()
     
-    -- یہاں ہم Base URL اور فائل کا نام جوڑ کر خودکار لنک بنا رہے ہیں
     local url = BASE_URL .. filename .. "?t=" .. tostring(os.time())
     
     Http.get(url, function(code, response)
@@ -271,7 +307,6 @@ local function fetchCategoryData(filename, categoryName, catKey)
     end)
 end
 
--- کیٹیگریز کا مینیو ڈائنامک طریقے سے دکھانے کا فنکشن
 local function showQASubMenu()
     if #categoriesData == 0 then
         Toast.makeText(activity, "کیٹیگریز لوڈ ہو رہی ہیں، براہِ کرم انٹرنیٹ چیک کریں...", Toast.LENGTH_SHORT).show()
@@ -346,6 +381,109 @@ local function showQASubMenu()
     cat_dlg.show()
 end
 
+
+-- عجائب القرآن کے واقعے کی تفصیل دکھانے کے لیے
+local function showStoryDetailsDialog(itemTitle, itemDetails)
+    local detail_dlg = LuaDialog(activity)
+    local detail_views = {}
+    local detail_layout = {
+        LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
+        { TextView, id = "tv_q_title", text = itemTitle, textSize = "20sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "15dp" },
+        { ScrollView, layout_width = "fill", layout_weight = 1, 
+            { LinearLayout, orientation = "vertical", layout_width = "fill",
+                { TextView, text = itemDetails, textSize = "18sp", textColor = "#333333", layout_width = "fill", paddingBottom = "10dp" }
+            }
+        },
+        { Button, id = "btn_close", text = "Close", layout_width = "fill", layout_marginTop = "15dp", backgroundColor = "#9E9E9E", textColor = "#FFFFFF", padding = "15dp" }
+    }
+
+    detail_dlg.setView(loadlayout(detail_layout, detail_views))
+    detail_dlg.setCancelable(false)
+    detail_views.tv_q_title.setTypeface(Typeface.DEFAULT_BOLD)
+
+    detail_views.btn_close.onClick = function() detail_dlg.dismiss() end
+    detail_dlg.show()
+end
+
+-- عجائب القرآن کی لسٹ دکھانے کے لیے
+local function showAjaibUlQuranList(data)
+    local list_dlg = LuaDialog(activity)
+    list_dlg.setTitle("عجائب القرآن مع غرائب القرآن")
+    
+    local list_views = {}
+    local list_layout = {
+        LinearLayout, orientation = "vertical", padding = "15dp", layout_width = "fill", layout_height = "fill",
+        { LinearLayout, orientation = "horizontal", layout_width = "fill", layout_marginBottom = "5dp", gravity = "center_vertical",
+            { EditText, id = "et_search", hint = "Search story...", layout_width = "0dp", layout_weight = 1, singleLine = true },
+            { Button, id = "btn_voice", text = "VOICE SEARCH", textSize = "14sp", padding = "5dp", textColor = "#FFFFFF", backgroundColor = "#2196F3" }
+        },
+        { TextView, id = "tv_q_count", text = "Total Stories: 0", textSize = "14sp", textColor = "#4CAF50", layout_width = "fill", layout_marginBottom = "10dp", gravity = "center" },
+        { ScrollView, layout_width = "fill", layout_height = "0dp", layout_weight = 1, 
+            { LinearLayout, id = "stories_container", orientation = "vertical", layout_width = "fill" } 
+        },
+        { Button, id = "btn_close_list", text = "Back", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#9E9E9E", textColor = "#FFFFFF", padding = "15dp" }
+    }
+    
+    list_dlg.setView(loadlayout(list_layout, list_views))
+
+    list_views.btn_voice.onClick = function()
+        startVoiceSearch(list_views.et_search)
+    end
+
+    local function populateList(query)
+        list_views.stories_container.removeAllViews()
+        local count = 0
+        
+        for i, item in ipairs(data) do
+            local title = item.title or ""
+            local details = item.details or ""
+            
+            if query == "" or string.find(title, query, 1, true) then
+                count = count + 1
+                local btn = Button(activity)
+                
+                local numberedTitle = tostring(count) .. "۔ " .. title
+                
+                btn.setText(numberedTitle)
+                btn.setTextSize(16)
+                btn.setPadding(20, 20, 20, 20)
+                
+                local params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(0, 0, 0, 10)
+                btn.setLayoutParams(params)
+                
+                btn.setOnClickListener(function()
+                    showStoryDetailsDialog(numberedTitle, details)
+                end)
+                
+                list_views.stories_container.addView(btn)
+            end
+        end
+        list_views.tv_q_count.setText("Total Stories: " .. tostring(count))
+    end
+
+    populateList("")
+
+    list_views.et_search.addTextChangedListener(TextWatcher{
+        onTextChanged = function(s, start, before, count)
+            populateList(tostring(s))
+        end
+    })
+    
+    list_views.btn_close_list.onClick = function() list_dlg.dismiss() end
+    list_dlg.show()
+end
+
+-- پری لوڈڈ ڈیٹا چیک کرنے اور ڈائیلاگ کھولنے کا فنکشن
+local function openAjaibQuran()
+    if ajaibData and #ajaibData > 0 then
+        showAjaibUlQuranList(ajaibData)
+    else
+        Toast.makeText(activity, "عجائب القرآن کا ڈیٹا لوڈ ہو رہا ہے، براہِ کرم انٹرنیٹ چیک کریں...", Toast.LENGTH_SHORT).show()
+        loadAjaibData() -- اگر ڈیٹا نہ ہو تو دوبارہ فیچ کرنے کی کوشش
+    end
+end
+
 -- مین سکرین ڈائیلاگ
 function showQuizMainDialog()
     local dlg = LuaDialog(activity)
@@ -353,11 +491,16 @@ function showQuizMainDialog()
     local layout_views = {}
     local main_layout = {
         LinearLayout, orientation = "vertical", padding = "20dp", layout_width = "fill", layout_height = "wrap",
-        -- مین ٹائٹل تبدیل کر دیا گیا ہے
         { TextView, id = "tv_title", text = "Zehni Azmaish Season 3", textSize = "24sp", textColor = "#2196F3", gravity = "center", layout_width = "fill", layout_marginBottom = "5dp" },
-        { TextView, text = "project by learning with Gulab", textSize = "14sp", textColor = "#607D8B", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
-        -- بٹن کا ٹیکسٹ تبدیل کر دیا گیا ہے
+        { TextView, text = "project by Tech for VI", textSize = "14sp", textColor = "#607D8B", gravity = "center", layout_width = "fill", layout_marginBottom = "25dp" },
+        
+        -- کوئز والا بٹن
         { Button, id = "btn_qa", text = "Dilchasp Malomaat (Sawalan Jawaban)", layout_width = "fill", layout_marginTop = "5dp", padding = "15dp", backgroundColor = "#009688", textColor = "#FFFFFF" },
+        
+        -- نیا عجائب القرآن والا بٹن (رومن میں)
+        { Button, id = "btn_ajaib", text = "Ajaib ul Quran", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#FF9800", textColor = "#FFFFFF", padding = "15dp" },
+        
+        -- ایگزٹ بٹن
         { Button, id = "btn_exit", text = "Exit", layout_width = "fill", layout_marginTop = "10dp", backgroundColor = "#F44336", textColor = "#FFFFFF", padding = "15dp" }
     }
 
@@ -367,6 +510,11 @@ function showQuizMainDialog()
 
     layout_views.btn_qa.onClick = function()
         showQASubMenu()
+    end
+    
+    -- نئے بٹن کا کلک ایونٹ
+    layout_views.btn_ajaib.onClick = function()
+        openAjaibQuran()
     end
 
     layout_views.btn_exit.onClick = function()
