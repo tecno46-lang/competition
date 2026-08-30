@@ -1,0 +1,142 @@
+[
+  {
+    "category_name": "ایمان و عقائد",
+    "category_roman": "Iman o Aqaid",
+    "sub_categories": [
+      { "file": "allah_taala.json", "name": "اللہ تعالیٰ", "roman": "Allah Ta'ala" },
+      { "file": "nabuwat.json", "name": "نبوت", "roman": "Nabuwat" },
+      { "file": "farishtay.json", "name": "فرشتے", "roman": "Farishtay" },
+      { "file": "jinnat.json", "name": "جنات", "roman": "Jinnat" },
+      { "file": "jannat.json", "name": "جنت", "roman": "Jannat" },
+      { "file": "dozakh.json", "name": "دوزخ", "roman": "Dozakh" },
+      { "file": "aalam_e_barzakh.json", "name": "عالم برزخ", "roman": "Aalam-e-Barzakh" },
+      { "file": "qayamat_ki_nishaniyan.json", "name": "قیامت کی نشانیاں", "roman": "Qayamat Ki Nishaniyan" },
+      { "file": "qayamat.json", "name": "قیامت", "roman": "Qayamat" },
+      { "file": "iman_o_kufr.json", "name": "ایمان و کفر", "roman": "Iman o Kufr" },
+      { "file": "wilayat.json", "name": "ولایت", "roman": "Wilayat" }
+    ]
+  },
+  {
+    "category_name": "مسائل و احکام",
+    "category_roman": "Masail o Ahkam",
+    "sub_categories": [
+      { "file": "sharai_istalahaat.json", "name": "شرعی اصطلاحات", "roman": "Sharai Istalahaat" },
+      { "file": "taharat.json", "name": "طہارت", "roman": "Taharat" },
+      { "file": "wuzu.json", "name": "وضو", "roman": "Wuzu" },
+      { "file": "tayammum.json", "name": "تیمم", "roman": "Tayammum" },
+      { "file": "najasat.json", "name": "نجاست", "roman": "Najasat" },
+      { "file": "azan_o_iqamat.json", "name": "اذان و اقامت", "roman": "Azan o Iqamat" },
+      { "file": "namaz.json", "name": "نماز", "roman": "Namaz" },
+      { "file": "namaz_ki_sharait.json", "name": "نماز کی شرائط", "roman": "Namaz Ki Sharait" },
+      { "file": "namaz_ke_faraiz.json", "name": "نماز کے فرائض", "roman": "Namaz Ke Faraiz" },
+      { "file": "wajibat_e_namaz_aur_sajda_saho.json", "name": "واجبات نماز اور سجدہ سہو", "roman": "Wajibat-e-Namaz aur Sajda Saho" },
+      { "file": "namaz_e_witr.json", "name": "نماز وتر", "roman": "Namaz-e-Witr" },
+      { "file": "sunnatain_aur_nawafil.json", "name": "سنتیں اور نوافل", "roman": "Sunnatain aur Nawafil" },
+      { "file": "taraweeh.json", "name": "تراویح", "roman": "Taraweeh" },
+      { "file": "qaza_namazain.json", "name": "قضا نمازیں", "roman": "Qaza Namazain" },
+      { "file": "sajda_tilawat_sajda_shukr.json", "name": "سجدہ تلاوت، سجدہ شکر", "roman": "Sajda Tilawat, Sajda Shukr" },
+      { "file": "jumma.json", "name": "جمعہ", "roman": "Jumma" },
+      { "file": "eidein.json", "name": "عیدین", "roman": "Eidein" },
+      { "file": "bemari_aur_ilaj.json", "name": "بیماری اور علاج", "roman": "Bemari aur Ilaj" },
+      { "file": "ayadat_aur_maut.json", "name": "عیادت اور موت", "roman": "Ayadat aur Maut" },
+      { "file": "mayyit_ka_ghusl_aur_kafan.json", "name": "میت کا غسل اور کفن", "roman": "Mayyit Ka Ghusl aur Kafan" },
+      { "file": "namaz_e_janaza.json", "name": "نماز جنازہ", "roman": "Namaz-e-Janaza" },
+      { "file": "qabr_o_dafan.json", "name": "قبر و دفن", "roman": "Qabr o Dafan" },
+      { "file": "zakat.json", "name": "زکوٰۃ", "roman": "Zakat" },
+      { "file": "sadqa.json", "name": "صدقہ", "roman": "Sadqa" },
+      { "file": "roza.json", "name": "روزہ", "roman": "Roza" },
+      { "file": "hajj_aur_umrah.json", "name": "حج اور عمرہ", "roman": "Hajj aur Umrah" },
+      { "file": "qasam.json", "name": "قسم", "roman": "Qasam" },
+      { "file": "luqata.json", "name": "لقطہ", "roman": "Luqata" },
+      { "file": "masajid.json", "name": "مساجد", "roman": "Masajid" },
+      { "file": "kasb_aur_tijarat.json", "name": "کسب اور تجارت", "roman": "Kasb aur Tijarat" },
+      { "file": "qarz_aur_sood.json", "name": "قرض اور سود", "roman": "Qarz aur Sood" },
+      { "file": "zibh.json", "name": "ذبح", "roman": "Zibh" },
+      { "file": "qurbani.json", "name": "قربانی", "roman": "Qurbani" }
+    ]
+  },
+  {
+    "category_name": "سنتیں اور آداب",
+    "category_roman": "Sunnatain aur Aadab",
+    "sub_categories": [
+      { "file": "khana.json", "name": "کھانا", "roman": "Khana" },
+      { "file": "libas_angoothi_aur_zewar.json", "name": "لباس انگوٹھی اور زیور", "roman": "Libas Angoothi aur Zewar" },
+      { "file": "zeenat_ka_bayan.json", "name": "زینت کا بیان", "roman": "Zeenat Ka Bayan" },
+      { "file": "baithne_sonay_aur_chalne_ke_aadab.json", "name": "بیٹھنے سونے اور چلنے کے آداب", "roman": "Baithne Sonay aur Chalne Ke Aadab" },
+      { "file": "salam_aur_musafaha.json", "name": "سلام اور مصافحہ", "roman": "Salam aur Musafaha" }
+    ]
+  },
+  {
+    "category_name": "فیضانِ قرآن و حدیث",
+    "category_roman": "Faizan-e-Quran o Hadees",
+    "sub_categories": [
+      { "file": "quran_kareem_fazail.json", "name": "قرآن کریم (فضائل و معلومات)", "roman": "Quran Kareem (Fazail o Maloomat)" },
+      { "file": "ayaat_aur_suraton_ki_maloomat.json", "name": "آیات اور سورتوں کی معلومات", "roman": "Ayaat aur Surton Ki Maloomat" },
+      { "file": "hadees_aur_muhaddiseen.json", "name": "حدیث اور محدثین", "roman": "Hadees aur Muhaddiseen" }
+    ]
+  },
+  {
+    "category_name": "اچھی خصلتیں",
+    "category_roman": "Achhi Khaslatain",
+    "sub_categories": [
+      { "file": "husn_e_akhlaq.json", "name": "حسن اخلاق", "roman": "Husn-e-Akhlaq" },
+      { "file": "khauf_e_khuda.json", "name": "خوف خدا", "roman": "Khauf-e-Khuda" },
+      { "file": "adl_o_insaf.json", "name": "عدل و انصاف", "roman": "Adl o Insaf" },
+      { "file": "silah_rahmi.json", "name": "صلہ رحمی", "roman": "Silah Rahmi" },
+      { "file": "sabr_o_shukr.json", "name": "صبر و شکر", "roman": "Sabr o Shukr" },
+      { "file": "aajizi_o_inkisari.json", "name": "عاجزی و انکساری", "roman": "Aajizi o Inkisari" },
+      { "file": "tauba_o_istighfar.json", "name": "توبہ و استغفار", "roman": "Tauba o Istighfar" }
+    ]
+  },
+  {
+    "category_name": "بری خصلتیں",
+    "category_roman": "Buri Khaslatain",
+    "sub_categories": [
+      { "file": "gheebat.json", "name": "غیبت", "roman": "Gheebat" },
+      { "file": "badshuguni.json", "name": "بدشگونی", "roman": "Badshuguni" }
+    ]
+  },
+  {
+    "category_name": "سیرت و حالات",
+    "category_roman": "Seerat o Halaat",
+    "sub_categories": [
+      { "file": "anbiya_e_kiram.json", "name": "انبیائے کرام", "roman": "Anbiya-e-Kiram" },
+      { "file": "guzishta_aqwam.json", "name": "گزشتہ اقوام", "roman": "Guzishta Aqwam" },
+      { "file": "seerat_syed_ul_anbiya.json", "name": "سیرت سید الانبیاء", "roman": "Seerat Syed-ul-Anbiya" },
+      { "file": "fazail_khasais_mujizat.json", "name": "فضائل و خصائص و معجزات", "roman": "Fazail o Khasais o Mujizat" },
+      { "file": "ghazwat.json", "name": "غزوات", "roman": "Ghazwat" },
+      { "file": "syedna_siddique_akbar.json", "name": "سیدنا صدیق اکبر", "roman": "Syedna Siddique Akbar" },
+      { "file": "syedna_umar_farooq_azam.json", "name": "سیدنا عمر فاروق اعظم", "roman": "Syedna Umar Farooq Azam" },
+      { "file": "syedna_usman_ghani.json", "name": "سیدنا عثمان غنی", "roman": "Syedna Usman Ghani" },
+      { "file": "syedna_ali_al_murtaza.json", "name": "سیدنا علی المرتضیٰ", "roman": "Syedna Ali Al-Murtaza" },
+      { "file": "ashra_mubashara.json", "name": "عشرہ مبشرہ", "roman": "Ashra Mubashara" },
+      { "file": "sahaba_kiram.json", "name": "صحابہ کرام", "roman": "Sahaba Kiram" },
+      { "file": "ummahat_ul_momineen.json", "name": "امہات المؤمنین", "roman": "Ummahat-ul-Momineen" },
+      { "file": "ahl_e_bait_athaar.json", "name": "اہل بیت اطہار", "roman": "Ahl-e-Bait Athaar" },
+      { "file": "imam_azam.json", "name": "امام اعظم", "roman": "Imam Azam" },
+      { "file": "ulama_o_mujtahideen.json", "name": "علماء و مجتہدین", "roman": "Ulama o Mujtahideen" },
+      { "file": "ghaus_e_azam.json", "name": "غوث اعظم", "roman": "Ghaus-e-Azam" },
+      { "file": "auliya_o_saliheen.json", "name": "اولیاء و صالحین", "roman": "Auliya o Saliheen" },
+      { "file": "ala_hazrat.json", "name": "اعلیٰ حضرت", "roman": "Ala Hazrat" },
+      { "file": "ulamay_ahlesunnat.json", "name": "علمائے اہلسنت", "roman": "Ulamay Ahlesunnat" },
+      { "file": "ameer_e_ahlesunnat.json", "name": "امیر اہلسنت", "roman": "Ameer-e-Ahlesunnat" }
+    ]
+  },
+  {
+    "category_name": "متفرقات",
+    "category_roman": "Mutafarriqat",
+    "sub_categories": [
+      { "file": "hamd.json", "name": "حمد", "roman": "Hamd" },
+      { "file": "zikr_o_azkar.json", "name": "ذکر و اذکار", "roman": "Zikr o Azkar" },
+      { "file": "darood_pak.json", "name": "درود پاک", "roman": "Darood Pak" },
+      { "file": "muqaddas_maqamat.json", "name": "مقدس مقامات", "roman": "Muqaddas Maqamat" },
+      { "file": "mutabarrak_ratain_aur_ayyam.json", "name": "متبرک راتیں اور ایام", "roman": "Mutabarrak Ratain aur Ayyam" },
+      { "file": "deen_e_islam.json", "name": "دین اسلام", "roman": "Deen-e-Islam" },
+      { "file": "aulad_aur_un_ke_huqooq.json", "name": "اولاد اور ان کے حقوق", "roman": "Aulad aur Un Ke Huqooq" },
+      { "file": "padosiyon_aur_aam_musalmanon_ke_huqooq.json", "name": "پڑوسیوں اور عام مسلمانوں کے حقوق", "roman": "Padosiyon aur Aam Musalmanon Ke Huqooq" },
+      { "file": "ilm_o_ulama.json", "name": "علم و علماء", "roman": "Ilm o Ulama" },
+      { "file": "baiyat_o_tareeqat.json", "name": "بیعت و طریقت", "roman": "Baiyat o Tareeqat" },
+      { "file": "dawat_e_islami_ka_taaruf.json", "name": "دعوت اسلامی کا تعارف", "roman": "Dawat-e-Islami Ka Taaruf" }
+    ]
+  }
+]
