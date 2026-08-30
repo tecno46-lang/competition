@@ -1,0 +1,121 @@
+[
+  {
+    "file_name": "husn_e_akhlaq.json",
+    "references": [
+      { "id": 1, "reference": "معجم کبیر ۵۹/۱۱، حدیث: ۱۱۰۷۹[span_1](start_span)[span_1](end_span)" },
+      { "id": 2, "reference": "ترمذی، کتاب البر والصلة، ۲۰۹/۳، حدیث : ۲۰۲۵، بتغیر قلیل[span_2](start_span)[span_2](end_span)" },
+      { "id": 3, "reference": "ترمذی، کتاب البر والصلة، باب ماجاء فى معاشرة الناس، ۳۹۷/۳، حدیث: ۱۹۹۴[span_3](start_span)[span_3](end_span)" },
+      { "id": 4, "reference": "مسند امام احمد مسند السيدة عائشة ۵۰۴/۹ ، حدیث : ۲۵۳۱۴[span_4](start_span)[span_4](end_span)" },
+      { "id": 5, "reference": "ترمذی، کتاب الرضاع، باب ماجاء في حق المرأة على زوجها، ۳۸۶/۲، حدیث: ۱۱۶۵[span_5](start_span)[span_5](end_span)" },
+      { "id": 6, "reference": "الروض الفائق ، المجلس السابع عشر فی اثبات كرمات الاولياء، ص ۱۰۲[span_6](start_span)[span_6](end_span)" },
+      { "id": 7, "reference": "شعب الايمان، باب فی حسن الخلق، فصل في لين الجانب وسلامة الصدر ٢٢/٦، حدیث: ۸۱۲۷[span_7](start_span)[span_7](end_span)" },
+      { "id": 8, "reference": "مسند طیالسی، مسند عثمان بن عفان، ص ۱۴ ، حدیث: ۸۴[span_8](start_span)[span_8](end_span)" },
+      { "id": 9, "reference": "الزواجر عن اقتراف الكبائر، الباب الأول في الكبائر الباطنة الكبيرة الثامنة والثلاثون ۱ / ۱۸۴[span_9](start_span)[span_9](end_span)" },
+      { "id": 10, "reference": "شعب الایمان، باب فی حسن الخلق، فصل في الحلم والتؤدة ، ٣٣٩/٦ ، حدیث : ۸۴۲۴[span_10](start_span)[span_10](end_span)" },
+      { "id": 11, "reference": "معجم اوسط 1/ ۲۴۷ ، حدیث : ۸۵۰[span_11](start_span)[span_11](end_span)" },
+      { "id": 12, "reference": "مسند امام احمد ، مسندابی بریره ۲۹۲/۳، حدیث: ۸۷۸۲[span_12](start_span)[span_12](end_span)" }
+    ]
+  },
+  {
+    "file_name": "khauf_e_khuda.json",
+    "references": [
+      { "id": 1, "reference": "القرآن الکریم، پ ۲۷، الرحمن: ۴۶؛ پ ۲۵، الدخان: ۵۱؛ پ ۱۴، النحل: ۱۲۸؛ پ ۶، المائدة: ۲۷؛ پ ۲۶، الحجرات: ۱۳؛ پ ۳۰، الليل: ۱۷؛ پ ۲۸، الطلاق: ۲[span_13](start_span)[span_13](end_span)" },
+      { "id": 2, "reference": "تفسير كبير، پ ۱۰، الانفال، تحت الآية : ۲، ۲۵۰/۵ ملتقطاً. الزواجر عن اقتراف الكبائر، مقدمة في تعريف الكبيرة، ٣٨/١[span_14](start_span)[span_14](end_span)" },
+      { "id": 3, "reference": "الزواجر عن اقتراف الكبائر، مقدمة في تعريف الكبيرة، ٣٣/١[span_15](start_span)[span_15](end_span)" },
+      { "id": 4, "reference": "القرآن الکریم، پ ۱۸، النور: ۶۳[span_16](start_span)[span_16](end_span)" },
+      { "id": 5, "reference": "احياء العلوم، كتاب الخوف والرجاء بيان درجات الخوف الخ، ۴/ ۱۹۲ ، ماخوذا[span_17](start_span)[span_17](end_span)" },
+      { "id": 6, "reference": "تنبيه الغافلين، باب ماجاء فى خوف الله تعالى ، ص ۲۰۹[span_18](start_span)[span_18](end_span)" },
+      { "id": 7, "reference": "معجم کبیر ۱۵۹/۲۰، حدیث: ۳۳۱[span_19](start_span)[span_19](end_span)" },
+      { "id": 8, "reference": "تنبيه الغافلين ، باب التفكر، ص ۳۰۸[span_20](start_span)[span_20](end_span)" },
+      { "id": 9, "reference": "مسند فردوسی ۳۰۲/۲، حدیث : ۶۲۹۱[span_21](start_span)[span_21](end_span)" },
+      { "id": 10, "reference": "مصنف ابن ابي شيبة كتاب الزهد، کلام ابی ذر رضی الله عنه، ۱۸۳/۸ ، حدیث : 1[span_22](start_span)[span_22](end_span)" },
+      { "id": 11, "reference": "شعب الايمان، باب في الخوف من الله تعالى ١ / ۵۲۸ ، حدیث : ۹۳۲[span_23](start_span)[span_23](end_span)" },
+      { "id": 12, "reference": "خوف خدا، ص ۲۳[span_24](start_span)[span_24](end_span)" }
+    ]
+  },
+  {
+    "file_name": "adl_o_insaaf.json",
+    "references": [
+      { "id": 1, "reference": "تفسیر صراط الجنان، پ ۱۴، النحل، تحت الآیۃ: ۹۰، ۳۷۱/۵[span_25](start_span)[span_25](end_span)" },
+      { "id": 2, "reference": "القرآن الکریم، پ ۵، النساء: ۵۸؛ پ ۲۶، الحجرات: ۹[span_26](start_span)[span_26](end_span)" },
+      { "id": 3, "reference": "مسلم، كتاب الامارة ، باب فضيلة الامام العادل - الخ ، ص ۷۸۳ ، حدیث : ۴۷۲۱. بخاری، کتاب الاذان، باب من جلس في المسجد ينتظر الصلاة الخ، ۲۳۶/۱ ، حدیث : ۶۶۰[span_27](start_span)[span_27](end_span)" },
+      { "id": 4, "reference": "القرآن الکریم، پ ۵، النساء: ۱۳۵؛ پ ۸، الانعام: ۱۵۲. نور العرفان ، پ۸ ، الانعام، تحت الآیۃ : ۱۵۲، ص ۲۳۵[span_28](start_span)[span_28](end_span)" },
+      { "id": 5, "reference": "مسند امام احمد ، حدیث سعد بن عبادة، ۳۳۹/۸، حدیث: ۳۲۵۲۶[span_29](start_span)[span_29](end_span)" },
+      { "id": 6, "reference": "مستدرک حاکم، کتاب الاحکام، باب قاضیان في النار وقاض في الجنة ، ۱۲۳/۵ ، حدیث : ۷۰۹۷[span_30](start_span)[span_30](end_span)" },
+      { "id": 7, "reference": "روح المعانی، پ ۸، الاعراف، تحت الآية : ۲۹ ۴۸۴/۴ ماخوذا. تفسیر صراط الجنان، پ۸، الاعراف، تحت الآیۃ: ۲۹۶/۳/۲۹[span_31](start_span)[span_31](end_span)" },
+      { "id": 8, "reference": "جامع الاحادیث، مسند خالد بن الوليد ۴۰۵/۱۹، حدیث: ۱۴۹۲۲[span_32](start_span)[span_32](end_span)" },
+      { "id": 9, "reference": "خزائن العرفان ، پ۵، النساء، تحت الآیة: ۵۸، ص ۱۷۱[span_33](start_span)[span_33](end_span)" },
+      { "id": 10, "reference": "بخاری، کتاب احادیث الانبياء باب ۵۶، ۴۶۸/۲، حدیث: ۳۴۷۵[span_34](start_span)[span_34](end_span)" },
+      { "id": 11, "reference": "فتوح الشام، ذكر فتح حمص، ۱ / ماخوذا[span_35](start_span)[span_35](end_span)" },
+      { "id": 12, "reference": "تفسیر صراط الجنان سے ماخوذ[span_36](start_span)[span_36](end_span)" }
+    ]
+  },
+  {
+    "file_name": "silah_rehmi.json",
+    "references": [
+      { "id": 1, "reference": "القرآن الکریم، پ ۱۵، بنی اسراءیل : ۲۳، ۲۴[span_37](start_span)[span_37](end_span)" },
+      { "id": 2, "reference": "قرة العيون ومفرح القلب المحزون، الباب الثامن في عقوبة قاتل النفس وقاطع الرحم ، ص ۰۱ معجم اوسط ۲۷۳/۱ حدیث: ۹۴۳ ملتقطا. مصنف ابن ابی شیبة كتاب الادب، باب ما قالوافي البر وصلة الرحم ٩۷/۲ ، حديث : ٢[span_38](start_span)[span_38](end_span)" },
+      { "id": 3, "reference": "معجم اوسط ۱۸۷/۲ ، حدیث : ۵۶۶۴[span_39](start_span)[span_39](end_span)" },
+      { "id": 4, "reference": "معجم كبير ۱۷/۱۲ ، حدیث: ۱۲۵۵۶[span_40](start_span)[span_40](end_span)" },
+      { "id": 5, "reference": "مسند بزار سند عبادة بن الصامت ١٦١/٧ ، حدیث: ۲۷۲۷ بتغیر. مجمع الزوائد، كتاب البر والصلة، باب مكارم الاخلاق والعفو عمن ظلم، ۳۴۵/۸، حدیث: ۱۳۶۹۴[span_41](start_span)[span_41](end_span)" },
+      { "id": 6, "reference": "معجم اوسط ١ / ، حدیث: ۹۰۹[span_42](start_span)[span_42](end_span)" },
+      { "id": 7, "reference": "تنبيه الغافلين باب صلة الرحم، ص ۷۳[span_43](start_span)[span_43](end_span)" },
+      { "id": 8, "reference": "رد المحتار كتاب الحظر والاباحة ، فصل في البيع، ٦٤٨/٩ ، ماخوذاً[span_44](start_span)[span_44](end_span)" },
+      { "id": 9, "reference": "معجم کبیر ۱۵۸/۹ ، حدیث : ۷۸۹۳[span_45](start_span)[span_45](end_span)" },
+      { "id": 10, "reference": "القرآن الکریم، پ ۲۶، محمد : ۲۲ ، ۲۳؛ پ ۱، البقرة : ۲۷؛ پ ۱۳، الرعد: ۲۵[span_46](start_span)[span_46](end_span)" },
+      { "id": 11, "reference": "ترمذى، كتاب صفة القيامة ، باب ۵۷ ۲۲۹/۴، حدیث: ۲۵۱۹. معجم اوسط ۱۸۷/۲ ، حدیث : ۵۶۶۴[span_47](start_span)[span_47](end_span)" },
+      { "id": 12, "reference": "ترمذی، کتاب الرضاع، باب ماجاء في حق المرأة على زوجها، ۳۸۶/۲، حدیث: ۱۱۶۵[span_48](start_span)[span_48](end_span)" }
+    ]
+  },
+  {
+    "file_name": "sabr_o_shukr.json",
+    "references": [
+      { "id": 1, "reference": "القرآن الکریم، پ ۲۶، الاحقاف : ۳۵؛ پ ۲، البقرة : ۱۵۳؛ پ ۱۴، النحل: ۹۶[span_49](start_span)[span_49](end_span)" },
+      { "id": 2, "reference": "شعب الايمان، باب في الصبر على المصائب ، ۱۲۴/۷ ، حدیث : ۹۷۱۸[span_50](start_span)[span_50](end_span)" },
+      { "id": 3, "reference": "لباب الأحياء الباب الثاني والثلاثون في الصبر والشكر، ص ٢٧٦[span_51](start_span)[span_51](end_span)" },
+      { "id": 4, "reference": "شعب الايمان، باب في حسن الخلق ، ۲۴۲/۶، حدیث: ۸۰۱۴[span_52](start_span)[span_52](end_span)" },
+      { "id": 5, "reference": "تفسیر جلالین ، پ ۳۰، سورة المعارج ، تحت الآية : ۵، ص ۴۷۳[span_53](start_span)[span_53](end_span)" },
+      { "id": 6, "reference": "القرآن الکریم، پ ۲، البقرة : ۱۵۲؛ پ ۳، ال عمران : ۱۴۴[span_54](start_span)[span_54](end_span)" },
+      { "id": 7, "reference": "احیاء علوم الدین، کتاب الصبر والشكر بيان فضيلة الصبر ۷۷/۲[span_55](start_span)[span_55](end_span)" },
+      { "id": 8, "reference": "لباب الأحياء الباب الثاني والثلاثون في الصبر والشكر، ص ٢٧٦[span_56](start_span)[span_56](end_span)" },
+      { "id": 9, "reference": "لباب الأحياء الباب الثاني والثلاثون في الصبر والشكر، ص ۲۷۷ ملخصات[span_57](start_span)[span_57](end_span)" },
+      { "id": 10, "reference": "لباب الاحياء الباب الثاني والثلاثون في الصبر والشكر ، ص ٢٧٧[span_58](start_span)[span_58](end_span)" },
+      { "id": 11, "reference": "معرفة الصحابة لا بي نعيم ، رقم ۳۳۷۳، ابو عبد العزيز الانصاری (۵۲۸/۴ ، حدیث: ۱۹۷۹[span_59](start_span)[span_59](end_span)" },
+      { "id": 12, "reference": "مرآة المنابج ، ۱۱۹/۲[span_60](start_span)[span_60](end_span)" }
+    ]
+  },
+  {
+    "file_name": "aajzi_o_inkisaari.json",
+    "references": [
+      { "id": 1, "reference": "منهاج العابدين العقبة الثالثة وهى عقبة العوائق الفصل الرابع القلب ، ص ۸۱[span_61](start_span)[span_61](end_span)" },
+      { "id": 2, "reference": "معجم کبیر، ۷۱/۵ ، حدیث : ۴۶۱۶[span_62](start_span)[span_62](end_span)" },
+      { "id": 3, "reference": "معجم کبیر ١۲ / ، حدیث: ۱۲۹۳۹[span_63](start_span)[span_63](end_span)" },
+      { "id": 4, "reference": "مسلم، كتاب البر والصلة باب استحباب العفو و التواضع، ص ۱۰۷۱ ، حدیث : ۶۵۹۲[span_64](start_span)[span_64](end_span)" },
+      { "id": 5, "reference": "ابن حبان، كتاب الحظر والاباحة باب التواضع والكبر والعجب، ۳۷۵/۷، حدیث: ۵۶۴۹[span_65](start_span)[span_65](end_span)" },
+      { "id": 6, "reference": "ابوداود، کتاب الادب، باب من كظم غيظا ۳۲۶/۴، حدیث: ۴۷۷۸[span_66](start_span)[span_66](end_span)" },
+      { "id": 7, "reference": "مسند الفردوس ۴۲۷/۵، حدیث: ۸۶۳۴[span_67](start_span)[span_67](end_span)" },
+      { "id": 8, "reference": "شعب الایمان، باب فی حسن الخلق، فصل في التواضع ، ۲۹۲/٦، حدیث: ۸۲۰۱[span_68](start_span)[span_68](end_span)" },
+      { "id": 9, "reference": "معجم كبير ١٠ / ۹۰ ، حدیث : ۱۰۰۴۸[span_69](start_span)[span_69](end_span)" },
+      { "id": 10, "reference": "حلية الأولياء ، شقيق البلخی، ۷۵/۸ ، حدیث: ۱۱۴۱۷[span_70](start_span)[span_70](end_span)" },
+      { "id": 11, "reference": "شعب الايمان ، باب في الصبر على المصائب، فصل في الذكر ما في الاوجاع ... الخ ۲۱۳/۷، حدیث: ۱۰۰۴۳[span_71](start_span)[span_71](end_span)" },
+      { "id": 12, "reference": "نیکی کی دعوت ، ص ۸۰[span_72](start_span)[span_72](end_span)" }
+    ]
+  },
+  {
+    "file_name": "tauba_o_istighfar.json",
+    "references": [
+      { "id": 1, "reference": "تفسیر صراط الجنان ، پ ۴ ، النساء ، تحت الآیۃ: ۲۰۱۷ / ۱۶۳[span_73](start_span)[span_73](end_span)" },
+      { "id": 2, "reference": "موسوعة ابن ابى الدنيا، كتاب التوبة ۴۲۲/۳، حدیث: ۱۸۴[span_74](start_span)[span_74](end_span)" },
+      { "id": 3, "reference": "ابن ماجه ، كتاب الزهد باب ذكر التوبة ۴۹۱/۴، حدیث: ۴۲۵۰[span_75](start_span)[span_75](end_span)" },
+      { "id": 4, "reference": "الروض الفائق، المجلس الثاني في قوله تعالى : الرحمن علم القرآن، ص ۱۵[span_76](start_span)[span_76](end_span)" },
+      { "id": 5, "reference": "مكارم الاخلاق للطبراني، باب فضل الصبر والسماحة ، ص ۳۲۴ حدیث : ۳۵[span_77](start_span)[span_77](end_span)" },
+      { "id": 6, "reference": "ابن ماجه، كتاب الزهد باب ذكر الذنوب، ۳۸۸/۴، حدیث: ۴۲۴۴[span_78](start_span)[span_78](end_span)" },
+      { "id": 7, "reference": "تفسیر صراط الجنان ، پ۱۱، هود، تحت الآیة : ۳، ۴ / ۳۹۳[span_79](start_span)[span_79](end_span)" },
+      { "id": 8, "reference": "مرآة المناهج ، ٣ / ٣٦٣[span_80](start_span)[span_80](end_span)" },
+      { "id": 9, "reference": "مسند امام احمد مسندابی سعید الخدری ۵۹/۴ ، حدیث : ۱۱۲۴۴[span_81](start_span)[span_81](end_span)" },
+      { "id": 10, "reference": "مدارك ، پ ۱۹ ، الشعراء، تحت الآية : ۸۲، ص ۸۲۳ ، حديقة ندية الباب الثاني . . . الخ الفصل الاول ... الخ، ۱ / ۲۸۸[span_82](start_span)[span_82](end_span)" },
+      { "id": 11, "reference": "ابن ماجه، کتاب الادب، باب الاستغفار (۲۵۷/۴ ، حدیث : ۳۸۱۹[span_83](start_span)[span_83](end_span)" },
+      { "id": 12, "reference": "بخاری ، کتاب الدعوات ، باب افضل الاستغفار ۲/ ۱۸۹ ، حدیث : ۶۳۰۶[span_84](start_span)[span_84](end_span)" }
+    ]
+  }
+]
