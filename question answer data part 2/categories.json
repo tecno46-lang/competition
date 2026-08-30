@@ -2,6 +2,7 @@
   {
     "category_name": "ایمان و عقائد",
     "category_roman": "Iman o Aqaid",
+    "folder_name": "iman_o_aqaid",
     "sub_categories": [
       { "file": "allah_taala.json", "name": "اللہ تعالیٰ", "roman": "Allah Ta'ala" },
       { "file": "nabuwat.json", "name": "نبوت", "roman": "Nabuwat" },
@@ -19,6 +20,7 @@
   {
     "category_name": "مسائل و احکام",
     "category_roman": "Masail o Ahkam",
+    "folder_name": "masail_o_ahkam",
     "sub_categories": [
       { "file": "sharai_istalahaat.json", "name": "شرعی اصطلاحات", "roman": "Sharai Istalahaat" },
       { "file": "taharat.json", "name": "طہارت", "roman": "Taharat" },
@@ -58,6 +60,7 @@
   {
     "category_name": "سنتیں اور آداب",
     "category_roman": "Sunnatain aur Aadab",
+    "folder_name": "sunnatain_aur_aadaab",
     "sub_categories": [
       { "file": "khana.json", "name": "کھانا", "roman": "Khana" },
       { "file": "libas_angoothi_aur_zewar.json", "name": "لباس انگوٹھی اور زیور", "roman": "Libas Angoothi aur Zewar" },
@@ -69,6 +72,7 @@
   {
     "category_name": "فیضانِ قرآن و حدیث",
     "category_roman": "Faizan-e-Quran o Hadees",
+    "folder_name": "faizan_quran_o_hadith",
     "sub_categories": [
       { "file": "quran_kareem_fazail.json", "name": "قرآن کریم (فضائل و معلومات)", "roman": "Quran Kareem (Fazail o Maloomat)" },
       { "file": "ayaat_aur_suraton_ki_maloomat.json", "name": "آیات اور سورتوں کی معلومات", "roman": "Ayaat aur Surton Ki Maloomat" },
@@ -78,6 +82,7 @@
   {
     "category_name": "اچھی خصلتیں",
     "category_roman": "Achhi Khaslatain",
+    "folder_name": "achhi_khaslatain",
     "sub_categories": [
       { "file": "husn_e_akhlaq.json", "name": "حسن اخلاق", "roman": "Husn-e-Akhlaq" },
       { "file": "khauf_e_khuda.json", "name": "خوف خدا", "roman": "Khauf-e-Khuda" },
@@ -91,6 +96,7 @@
   {
     "category_name": "بری خصلتیں",
     "category_roman": "Buri Khaslatain",
+    "folder_name": "buri_khaslatain",
     "sub_categories": [
       { "file": "gheebat.json", "name": "غیبت", "roman": "Gheebat" },
       { "file": "badshuguni.json", "name": "بدشگونی", "roman": "Badshuguni" }
@@ -99,6 +105,7 @@
   {
     "category_name": "سیرت و حالات",
     "category_roman": "Seerat o Halaat",
+    "folder_name": "seerat_o_shakhsiyaat",
     "sub_categories": [
       { "file": "anbiya_e_kiram.json", "name": "انبیائے کرام", "roman": "Anbiya-e-Kiram" },
       { "file": "guzishta_aqwam.json", "name": "گزشتہ اقوام", "roman": "Guzishta Aqwam" },
@@ -125,6 +132,7 @@
   {
     "category_name": "متفرقات",
     "category_roman": "Mutafarriqat",
+    "folder_name": "mutafarriq",
     "sub_categories": [
       { "file": "hamd.json", "name": "حمد", "roman": "Hamd" },
       { "file": "zikr_o_azkar.json", "name": "ذکر و اذکار", "roman": "Zikr o Azkar" },
